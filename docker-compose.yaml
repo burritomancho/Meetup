@@ -1,13 +1,21 @@
-# volumes:
+volumes:
+  meetup-data:
+    external: true
 services:
   fastapi:
     build:
-      context: sample_service
+      context: meetup
       dockerfile: Dockerfile.dev
+    environment:
+      WAIT_HOSTS: db:27017
+      WAIT_BEFORE: 5
+      WAIT_TIMEOUT: 60
+      DATABASE_URL: mongodb://meetup_user:meetup_pw@db/admin
+      PORT: 8000
     ports:
       - 8000:8000
     volumes:
-      - ./sample_service:/app
+      - ./meetup:/app
 
   ghi:
     image: node:lts-bullseye
@@ -22,4 +30,25 @@ services:
       NODE_ENV: development
       HOST: "0.0.0.0"
       PUBLIC_URL: http://localhost:3000
+      REACT_APP_USER_SERVICE_API_HOST: http://localhost:8000
       REACT_APP_SAMPLE_SERVICE_API_HOST: ${REACT_APP_SAMPLE_SERVICE_API_HOST}
+
+  db:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_PASSWORD: meetup_pw
+      MONGO_INITDB_ROOT_USERNAME: meetup_user
+    volumes:
+      - meetup-data:/data/db
+
+  mongo-express:
+    image: mongo-express
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_SERVER: db
+      ME_CONFIG_MONGODB_ADMINUSERNAME: meetup_user
+      ME_CONFIG_MONGODB_ADMINPASSWORD: meetup_pw
+      WAIT_HOSTS: mongo:27017
+      WAIT_BEFORE: 5
+      WAIT_TIMEOUT: 60
