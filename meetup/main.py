@@ -1,8 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import os
+from routers import user, schedule, hangout
 
 app = FastAPI()
+app.include_router(user.router)
+app.include_router(schedule.router)
+app.include_router(hangout.router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -14,15 +18,3 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-@app.get("/api/launch-details")
-def launch_details():
-    return {
-        "launch_details": {
-            "module": 3,
-            "week": 17,
-            "day": 5,
-            "hour": 19,
-            "min": "00"
-        }
-    }
