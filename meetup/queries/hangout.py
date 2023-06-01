@@ -8,7 +8,6 @@ from pymongo.cursor import Cursor
 
 db = conn["Hangouts"]
 collection = db["hangouts"]
-
 collection.create_index("name", unique=True)
 
 
@@ -81,11 +80,11 @@ class HangoutRepo:
                 "There was an error when creating a hangout: " + str(e)
             )
 
-    def get_one_hangout(self, name: str) -> Optional[HangoutOut]:
+    def get_one_hangout(self, name: str) -> HangoutOut:
         try:
             hangout = collection.find_one({"name": name})
             if hangout:
-                hangout["_id"] = str(hangout["_id"])  # Convert ObjectId to string
+                hangout["_id"] = str(hangout["_id"])
                 return HangoutOut(**hangout)
             else:
                 raise HTTPException(

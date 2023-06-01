@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from queries.hangout import (
     HangoutIn,
     HangoutOut,
@@ -7,7 +7,8 @@ from queries.hangout import (
 )
 from pydantic import BaseModel
 from typing import Optional, List
-from datetime import date, datetime
+from datetime import date
+from authenticator import authenticator
 
 router = APIRouter()
 hangout_repo = HangoutRepo()
@@ -22,7 +23,7 @@ class UpdateHangoutModel(BaseModel):
 
 
 @router.get("/hangouts")
-async def get_all_hangouts():
+async def get_all_hangouts(account_data: dict = Depends(authenticator.get_current_account_data)):
     try:
         hangouts = hangout_repo.get_all_hangouts()
         return [
@@ -35,7 +36,10 @@ async def get_all_hangouts():
 
 
 @router.post("/hangouts")
-async def create_hangout(hangout: HangoutIn) -> HangoutOut:
+async def create_hangout(
+    hangout: HangoutIn,
+    account_data: dict = Depends(authenticator.get_current_account_data),
+) -> HangoutOut:
     try:
         created_hangout = hangout_repo.create_hangout(hangout)
     except DuplicateHangoutName:
@@ -46,7 +50,10 @@ async def create_hangout(hangout: HangoutIn) -> HangoutOut:
 
 
 @router.get("/hangouts/{hangout_name}/users", response_model=List[str])
-async def get_users_in_hangout(hangout_name: str):
+async def get_users_in_hangout(
+    hangout_name: str,
+    account_data: dict = Depends(authenticator.get_current_account_data),
+):
     try:
         users = hangout_repo.get_users_in_hangout(hangout_name)
         return users
@@ -55,7 +62,10 @@ async def get_users_in_hangout(hangout_name: str):
 
 
 @router.get("/hangouts/{name}")
-async def get_one_hangout(name: str):
+async def get_one_hangout(
+    name: str,
+    account_data: dict = Depends(authenticator.get_current_account_data),
+):
     try:
         hangout = hangout_repo.get_one_hangout(name)
         return hangout
@@ -64,7 +74,11 @@ async def get_one_hangout(name: str):
 
 
 @router.put("/hangouts/{name}")
-async def update_hangout(name: str, hangout: UpdateHangoutModel) -> HangoutOut:
+async def update_hangout(
+    name: str,
+    hangout: UpdateHangoutModel,
+    account_data: dict = Depends(authenticator.get_current_account_data),
+) -> HangoutOut:
     try:
         updated_hangout = hangout_repo.update_hangout(name, hangout)
         if updated_hangout is None:
@@ -79,7 +93,10 @@ async def update_hangout(name: str, hangout: UpdateHangoutModel) -> HangoutOut:
 
 
 @router.delete("/hangouts/{name}")
-async def delete_hangout(name: str):
+async def delete_hangout(
+    name: str,
+    account_data: dict = Depends(authenticator.get_current_account_data),
+):
     deleted_hangout = hangout_repo.delete_hangout(name)
     if deleted_hangout is None:
         raise HTTPException(status_code=404, detail="Hangout not found")

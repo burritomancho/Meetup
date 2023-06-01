@@ -1,7 +1,9 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends, Request, Response
 from queries.user import UserIn, UserOut, UserRepo, DuplicateUserError
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
+from jwtdown_fastapi.authentication import Token
+from authenticator import authenticator
 
 router = APIRouter()
 user_repo = UserRepo()
@@ -12,14 +14,40 @@ class AccountForm(BaseModel):
     password: str
 
 
+class AccountToken(Token):
+    account: UserOut
+
+
 class UpdateUserModel(BaseModel):
     username: Optional[str]
     email: Optional[str]
     password: Optional[str]
 
 
-@router.get("/users")
-async def get_all_users():
+@router.get("/protected", response_model=bool)
+async def get_protected(
+    account_data: dict = Depends(authenticator.get_current_account_data),
+):
+    return True
+
+
+@router.get("/token", response_model=AccountToken | None)
+async def get_token(
+    request: Request,
+    user: UserOut = Depends(authenticator.try_get_current_account_data),
+) -> AccountToken | None:
+    if authenticator.cookie_name in request.cookies:
+        return {
+            "access_token": request.cookies[authenticator.cookie_name],
+            "type": "Bearer",
+            "account": user,
+        }
+
+
+@router.get("/users", response_model=List[UserOut])
+async def get_all_users(
+    account_data: dict = Depends(authenticator.get_current_account_data),
+) -> List[UserOut]:
     try:
         users = user_repo.get_all_users()
         return [UserOut(**user) for user in users]
@@ -27,19 +55,30 @@ async def get_all_users():
         raise HTTPException(status_code=500, detail="Unexpected error")
 
 
-@router.post("/users")
-async def create_user(user: UserIn) -> UserOut:
+@router.post("/users", response_model=AccountToken)
+async def create_user(
+    user: UserIn,
+    request: Request,
+    response: Response,
+    repo: UserRepo = Depends(),
+):
+    hashed_password = authenticator.hash_password(user.password)
     try:
-        created_user = user_repo.create_user(user)
+        created_user = user_repo.create_user(user, hashed_password)
     except DuplicateUserError:
         raise HTTPException(
             status_code=409, detail="User with this email already exists"
         )
-    return created_user
+    form = AccountForm(username=user.email, password=user.password)
+    token = await authenticator.login(response, request, form, repo)
+    return AccountToken(account=created_user, **token.dict())
 
 
-@router.get("/users/{email}")
-async def get_one_user(email: str):
+@router.get("/users/{email}", response_model=AccountToken)
+async def get_one_user(
+    email: str,
+    account_data: dict = Depends(authenticator.get_current_account_data),
+) -> UserOut:
     try:
         user = user_repo.get_one_user(email)
         return user
@@ -48,7 +87,11 @@ async def get_one_user(email: str):
 
 
 @router.put("/users/{email}")
-async def update_user(email: str, user: UpdateUserModel) -> UserOut:
+async def update_user(
+    email: str,
+    user: UpdateUserModel,
+    account_data: dict = Depends(authenticator.get_current_account_data),
+) -> UserOut:
     try:
         updated_user = user_repo.update_user(email, user)
         if updated_user is None:
@@ -63,7 +106,10 @@ async def update_user(email: str, user: UpdateUserModel) -> UserOut:
 
 
 @router.delete("/users/{email}")
-async def delete_user(email: str) -> UserOut:
+async def delete_user(
+    email: str,
+    account_data: dict = Depends(authenticator.get_current_account_data),
+) -> UserOut:
     deleted_user = user_repo.delete_user(email)
     if deleted_user is None:
         raise HTTPException(status_code=404, detail="User not found")
