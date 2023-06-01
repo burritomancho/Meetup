@@ -50,5 +50,5 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: meetup_user
       ME_CONFIG_MONGODB_ADMINPASSWORD: meetup_pw
       WAIT_HOSTS: mongo:27017
-      WAIT_BEFORE: 5
+      WAIT_BEFORE: 15
       WAIT_TIMEOUT: 60
