@@ -3,6 +3,7 @@ import logo from "../assets/logo.png";
 import { CgProfile } from "react-icons/cg";
 import { BsFillQuestionCircleFill } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
+import { Link } from "react-router-dom";
 
 function Sidebar() {
   const [show, setShow] = useState(false);
@@ -29,13 +30,15 @@ function Sidebar() {
       >
         <div className="grid grid-cols-1 gap-y-[700px]">
           <div className="drop-shadow-2xl">
-            <div className="cursor-pointer">
-              <img
-                src={logo}
-                alt="logo"
-                className="w-[40px] h-[40px] mx-auto my-3"
-              />
-            </div>
+            <Link to="/">
+              <div className="cursor-pointer">
+                <img
+                  src={logo}
+                  alt="logo"
+                  className="w-[40px] h-[40px] mx-auto my-3"
+                />
+              </div>
+            </Link>
             <ul>
               <li
                 className="text-black border-b-2 border-t-2 border-[#646445] py-4 hover:bg-[#42422e] transition duration-300"
@@ -66,9 +69,11 @@ function Sidebar() {
             }`}
           >
             <div className="flex justify-between border-b-2 border-[#646445]">
-              <h2 className="m-3 text-4xl">
-                Meet<span className="text-white">Up</span>
-              </h2>
+              <Link to="/" onClick={handleSidebar}>
+                <h2 className="m-3 text-4xl">
+                  Meet<span className="text-white">Up</span>
+                </h2>
+              </Link>
               <IoMdClose
                 size={23}
                 className="m-2 cursor-pointer"
@@ -78,12 +83,16 @@ function Sidebar() {
             </div>
             <div>
               <ul>
-                <li className="px-3 py-2 border-b-2 border-[#646445] text-lg font-semibold text-[#c8c888] hover:text-[#7b7b53]">
-                  Login
-                </li>
-                <li className="px-3 py-2 border-b-2 border-[#646445] text-lg font-semibold text-[#c8c888] hover:text-[#7b7b53]">
-                  Register
-                </li>
+                <Link to="/login" onClick={handleSidebar}>
+                  <li className="px-3 py-2 border-b-2 border-[#646445] text-lg font-semibold text-[#c8c888] hover:text-[#7b7b53]">
+                    Login
+                  </li>
+                </Link>
+                <Link to="/register" onClick={handleSidebar}>
+                  <li className="px-3 py-2 border-b-2 border-[#646445] text-lg font-semibold text-[#c8c888] hover:text-[#7b7b53]">
+                    Register
+                  </li>
+                </Link>
               </ul>
             </div>
           </div>
