@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import logo from "../assets/logo.png";
-import { GiHamburgerMenu } from "react-icons/gi";
+import { CgProfile } from "react-icons/cg";
 import { BsFillQuestionCircleFill } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
 
@@ -41,11 +41,7 @@ function Sidebar() {
                 className="text-black border-b-2 border-t-2 border-[#646445] py-4 hover:bg-[#42422e] transition duration-300"
                 onClick={handleSidebar}
               >
-                <GiHamburgerMenu
-                  size={26}
-                  color="#c8c888"
-                  className="mx-auto"
-                />
+                <CgProfile size={26} color="#c8c888" className="mx-auto" />
               </li>
             </ul>
           </div>
