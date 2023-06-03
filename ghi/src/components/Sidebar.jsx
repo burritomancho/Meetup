@@ -4,6 +4,7 @@ import { CgProfile } from "react-icons/cg";
 import { BsFillQuestionCircleFill } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
 import { Link } from "react-router-dom";
+import { BiLogInCircle, BiRegistered } from "react-icons/bi";
 
 function Sidebar() {
   const [show, setShow] = useState(false);
@@ -16,7 +17,7 @@ function Sidebar() {
   useEffect(() => {
     setTimeout(() => {
       setShow(true);
-    }, 300);
+    }, 100);
   }, []);
 
   return (
@@ -41,7 +42,7 @@ function Sidebar() {
             </Link>
             <ul>
               <li
-                className="text-black border-b-2 border-t-2 border-[#646445] py-4 hover:bg-[#42422e] transition duration-300"
+                className="text-black border-b-2 border-t-2 border-[#646445] py-4 hover:bg-[#383825] transition duration-300"
                 onClick={handleSidebar}
               >
                 <CgProfile size={26} color="#c8c888" className="mx-auto" />
@@ -84,12 +85,13 @@ function Sidebar() {
             <div>
               <ul>
                 <Link to="/login" onClick={handleSidebar}>
-                  <li className="px-3 py-2 border-b-2 border-[#646445] text-lg font-semibold text-[#c8c888] hover:text-[#7b7b53]">
+                  <li className="px-3 py-2 flex border-b-2 border-[#646445] text-lg font-semibold text-[#c8c888] hover:text-[#cbcb86] hover:bg-[#383825]">
+                    <BiLogInCircle size={20} className="my-auto m-1" />
                     Login
                   </li>
                 </Link>
                 <Link to="/register" onClick={handleSidebar}>
-                  <li className="px-3 py-2 border-b-2 border-[#646445] text-lg font-semibold text-[#c8c888] hover:text-[#7b7b53]">
+                  <li className="px-3 py-2 pl-5 border-b-2 border-[#646445] text-lg font-semibold text-[#c8c888] hover:text-[#cbcb86] hover:bg-[#383825]">
                     Register
                   </li>
                 </Link>
