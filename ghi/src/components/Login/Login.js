@@ -28,7 +28,7 @@ export default function Login() {
     <>
       <div className="h-[100%] grid grid-cols-1 sm:grid-cols-2 rounded-md p-[1px] mx-auto">
         <div className="m-5 max-w-[250px] ml-[130px]">
-          <h1 className="text-xl font-bold pb-[110px] ml-[-100px] flex">
+          <h1 className="text-xl font-bold pb-[160px] ml-[-100px] flex">
             Meet<span className="text-black">Up</span>
             <BiCopyright size={15} className="my-auto mx-1" />
           </h1>
@@ -85,12 +85,9 @@ export default function Login() {
             </button>
             <div className="flex items-center justify-center">
               <p className="text-md font-semibold pt-2">
-                Not registered?
-                <Link
-                  to="/signup"
-                  className="pl-2 text-blue-500 font-semi-bold"
-                >
-                  Sign up
+                No account? Register&nbsp;
+                <Link to="/register" className=" text-blue-500 font-semi-bold">
+                  here!
                 </Link>
               </p>
             </div>

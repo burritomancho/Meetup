@@ -55,7 +55,7 @@ export default function Register() {
             Meet<span className="text-black">Up</span>
             <BiCopyright size={15} className="my-auto mx-1" />
           </h1>
-          <h1 className="text-5xl mb-7 font-bold">Register</h1>
+          <h1 className="text-5xl mb-7 font-bold text-center">Register</h1>
           <form onSubmit={handleSubmit} id="new-user">
             <div className="mb-5">
               <label
@@ -125,9 +125,9 @@ export default function Register() {
             </button>
             <div className="flex justify-center items-center">
               <p className="text-md font-semibold pt-2">
-                Already a user?
-                <Link to="/login" className="pl-2 text-blue-500 font-semi-bold">
-                  Login
+                Have an account? Login&nbsp;
+                <Link to="/login" className="text-blue-500 font-semi-bold">
+                  here!
                 </Link>
               </p>
             </div>
