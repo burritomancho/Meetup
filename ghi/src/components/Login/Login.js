@@ -28,17 +28,15 @@ export default function Login() {
     <>
       <div className="h-[100%] grid grid-cols-1 sm:grid-cols-2 rounded-md p-[1px] mx-auto">
         <div className="m-5 max-w-[250px] ml-[130px]">
-          <h1 className="text-xl font-bold pb-[150px] ml-[-100px] flex">
+          <h1 className="text-xl font-bold pb-[110px] ml-[-100px] flex">
             Meet<span className="text-black">Up</span>
             <BiCopyright size={15} className="my-auto mx-1" />
           </h1>
-          <h1 className="text-2xl mb-5 font-semibold text-center">
-            Welcome back!
-          </h1>
+          <h1 className="text-5xl mb-7 font-bold text-center">Welcome!</h1>
           <form onSubmit={handleSubmit} id="new-user">
             <div className="mb-5">
               <label
-                className="text-lg block font-semibold mb-2"
+                className="text-sm block font-semibold mb-1"
                 htmlFor="email"
               >
                 Email&nbsp;
@@ -55,7 +53,7 @@ export default function Login() {
             </div>
             <div className="mb-8">
               <label
-                className="text-lg block font-semibold mb-2"
+                className="text-sm block font-semibold mb-1"
                 htmlFor="password"
               >
                 Password&nbsp;
@@ -80,7 +78,7 @@ export default function Login() {
               </div>
             </div>
             <button
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-xl mb-2"
+              className="w-full bg-[#acae77] hover:bg-[#7b7b50] text-white font-normal text-sm py-2 mb-1"
               type="submit"
             >
               Login
