@@ -1,17 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { BiCopyright } from "react-icons/bi";
 import image from "../../assets/login.jpg";
+import useToken from "@galvanize-inc/jwtdown-for-react";
 
 export default function Login() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const { login, token } = useToken();
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
+  const handleUserNameChange = (e) => {
+    setUsername(e.target.value);
   };
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
@@ -22,7 +24,13 @@ export default function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+     login(username, password);
   };
+  useEffect(() => {
+    if (token) {
+      navigate("/profile");
+    }
+  }, [token, navigate]);
 
   return (
     <>
@@ -44,11 +52,11 @@ export default function Login() {
               </label>
               <input
                 className="border rounded w-full py-2 px-3"
-                onChange={handleEmailChange}
+                onChange={handleUserNameChange}
                 required
                 type="text"
                 name="email"
-                value={email}
+                value={username}
               />
             </div>
             <div className="mb-8">
