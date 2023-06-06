@@ -11,7 +11,9 @@ function App() {
 
   return (
     <BrowserRouter basename={basename}>
-      <AuthProvider tokenUrl={`${process.env.REACT_APP_USER_SERVICE_API_HOST}/token`}>
+      <AuthProvider
+        baseUrl={`${process.env.REACT_APP_USER_SERVICE_API_HOST}`}
+      >
         <Routes>
           <Route path="/" element={<Hero />} />
           <Route path="/login" element={<Hero />} />

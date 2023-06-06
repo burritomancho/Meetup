@@ -24,16 +24,11 @@ export default function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      console.log(username, password);
       await login(username, password);
     } catch (error) {
       console.log(error);
     }
   };
-  console.log(useAuthContext);
-  console.log(login);
-  const userUrl = `${process.env.REACT_APP_USER_SERVICE_API_HOST}/users`;
-  console.log(userUrl);
   useEffect(() => {
     if (token) {
       navigate("/");
