@@ -37,7 +37,7 @@ const Hero = () => {
         setShow(true);
       }, 375);
     }
-  }, [location]);
+  }, [location, show]);
 
   return (
     <>

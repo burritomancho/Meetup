@@ -20,6 +20,7 @@ function App() {
           <Route path="/login" element={<Hero />} />
           <Route path="/register" element={<Hero />} />
           <Route path="/profile" element={<UserProfile />} />
+          <Route path="/home" element={<HangoutLists />} />
         </Routes>
         <Sidebar />
       </AuthProvider>
