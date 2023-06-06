@@ -4,7 +4,7 @@ import { CgProfile } from "react-icons/cg";
 import { BsFillQuestionCircleFill } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
-import { BiLogInCircle, BiRegistered } from "react-icons/bi";
+import { BiLogInCircle } from "react-icons/bi";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 
 function Sidebar() {
@@ -38,7 +38,7 @@ function Sidebar() {
             : "-translate-x-full ease-out opacity-40"
         }`}
       >
-        <div className="grid grid-cols-1 gap-y-[700px]">
+        <div className="grid grid-cols-1 gap-y-[780px]">
           <div className="drop-shadow-2xl">
             <Link to="/">
               <div className="cursor-pointer">
