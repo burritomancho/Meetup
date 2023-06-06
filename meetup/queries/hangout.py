@@ -62,6 +62,15 @@ class HangoutRepo:
                 "There was an error when getting users in the hangout"
             )
 
+    def get_current_user_hangouts(self, username: str) -> Cursor:
+        try:
+            hangouts = collection.find({"friends": username}, {"_id": 0})
+            return list(hangouts)
+        except Exception:
+            raise Exception(
+                "There was an error getting your hangouts"
+            )
+
     def create_hangout(self, hangout: HangoutIn) -> HangoutOut:
         inserted_hangout = hangout.dict()
         inserted_hangout["days"] = datetime.combine(
@@ -71,7 +80,7 @@ class HangoutRepo:
             result = collection.insert_one(inserted_hangout)
             inserted_hangout["hangout_id"] = str(
                 result.inserted_id
-            )
+            )  # Convert ObjectId to string
             return HangoutOut(**inserted_hangout)
         except DuplicateKeyError:
             raise DuplicateHangoutName()
@@ -93,27 +102,20 @@ class HangoutRepo:
         except Exception:
             raise Exception("There was an error when getting a hangout")
 
-    def update_hangout(
-        self, name: str, hangout: UpdateHangoutModel
-    ) -> Optional[HangoutOut]:
+    def update_hangout(self, name: str, hangout: UpdateHangoutModel) -> Optional[HangoutOut]:
         existing_hangout = self.get_one_hangout(name)
         if existing_hangout:
             updated_data = hangout.dict(exclude_unset=True)
+            # updated_hangout = existing_hangout.copy(update=updated_data)
+            updated_document = {"set": updated_data}
             try:
-                updated_hangout = existing_hangout.copy(update=updated_data)
-                updated_document = updated_hangout.dict()
-                result = collection.update_one({"name": name}, {"$set": updated_document})
-
-                if result.matched_count == 0:
-                    raise HTTPException(status_code=404, detail="Hangout not found")
-
-                return updated_hangout
+                collection.update_one({"name": name}, updated_document)
+                return updated_data
             except DuplicateKeyError:
                 raise DuplicateHangoutName()
-            except Exception as e:
-                raise HTTPException(status_code=500, detail=str(e))
+            except Exception:
+                raise Exception("There was an error when updating a hangout")
         return None
-
 
     def delete_hangout(self, name: str) -> Optional[HangoutOut]:
         hangout = self.get_one_hangout(name)

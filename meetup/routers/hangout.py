@@ -61,6 +61,18 @@ async def get_users_in_hangout(
         raise HTTPException(status_code=500, detail="Unexpected error")
 
 
+@router.get("/hangouts/{username}")
+async def get_current_user_hangouts(
+    username: str,
+    account_data: dict = Depends(authenticator.get_current_account_data),
+):
+    try:
+        hangout = hangout_repo.get_current_user_hangouts(username)
+        return hangout
+    except Exception:
+        raise HTTPException(status_code=500, detail="Unexpected error")
+
+
 @router.get("/hangouts/{name}")
 async def get_one_hangout(
     name: str,
