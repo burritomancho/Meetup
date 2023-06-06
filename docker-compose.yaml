@@ -32,7 +32,6 @@ services:
       HOST: "0.0.0.0"
       PUBLIC_URL: http://localhost:3000
       REACT_APP_USER_SERVICE_API_HOST: http://localhost:8000
-      REACT_APP_SAMPLE_SERVICE_API_HOST: ${REACT_APP_SAMPLE_SERVICE_API_HOST}
 
   db:
     image: mongo:latest

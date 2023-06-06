@@ -1,17 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { BiCopyright } from "react-icons/bi";
 import image from "../../assets/login.jpg";
+import useToken from "@galvanize-inc/jwtdown-for-react";
 
 export default function Login() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const { login, token } = useToken();
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
+  const handleUserNameChange = (e) => {
+    setUsername(e.target.value);
   };
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
@@ -19,10 +21,19 @@ export default function Login() {
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
+    try {
+      await login(username, password);
+    } catch (error) {
+      console.log(error);
+    }
   };
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, [token, navigate]);
 
   return (
     <>
@@ -37,18 +48,18 @@ export default function Login() {
             <div className="mb-5">
               <label
                 className="text-sm block font-semibold mb-1"
-                htmlFor="email"
+                htmlFor="username"
               >
-                Email&nbsp;
+                Username&nbsp;
                 <span className="text-red-500 font-normal">*</span>
               </label>
               <input
                 className="border rounded w-full py-2 px-3"
-                onChange={handleEmailChange}
+                onChange={handleUserNameChange}
                 required
                 type="text"
-                name="email"
-                value={email}
+                name="username"
+                value={username}
               />
             </div>
             <div className="mb-8">

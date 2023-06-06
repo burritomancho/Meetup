@@ -7,7 +7,7 @@ from pymongo.cursor import Cursor
 
 db = conn["Users"]
 collection = db["users"]
-collection.create_index("email", unique=True)
+collection.create_index([("username", 1), ("email", 1)], unique=True)
 
 
 class UserIn(BaseModel):
@@ -54,9 +54,9 @@ class UserRepo:
         except Exception:
             raise Exception("There was an error when creating a user")
 
-    def get_one_user(self, email: str) -> Optional[UserOutWithPassword]:
+    def get_one_user(self, username: str) -> Optional[UserOutWithPassword]:
         try:
-            user = collection.find_one({"email": email})
+            user = collection.find_one({"username": username})
             if user:
                 user["hashed_password"] = user.get("hashed_password", "")
                 return UserOutWithPassword(**user)
@@ -65,15 +65,14 @@ class UserRepo:
         except Exception:
             raise Exception("There was an error when getting a user")
 
-
-    def update_user(self, email: str, user: UpdateUserModel) -> Optional[UserOut]:
-        existing_user = self.get_one_user(email)
+    def update_user(self, username: str, user: UpdateUserModel) -> Optional[UserOut]:
+        existing_user = self.get_one_user(username)
         if existing_user:
             updated_data = user.dict(exclude_unset=True)
             updated_user = existing_user.copy(update=updated_data)
             updated_document = updated_user.dict()
             try:
-                collection.replace_one({"email": email}, updated_document)
+                collection.replace_one({"username": username}, updated_document)
                 return updated_user
             except DuplicateKeyError:
                 raise DuplicateUserError()
@@ -81,12 +80,13 @@ class UserRepo:
                 raise Exception("There was an error when updating a user")
         return None
 
-    def delete_user(self, email: str) -> Optional[UserOut]:
-        user = self.get_one_user(email)
+    def delete_user(self, username: str) -> Optional[UserOut]:
+        user = self.get_one_user(username)
         if user is None:
             return None
         try:
-            collection.delete_one({"email": email})
+            collection.delete_one({"username": username})
             return user
         except Exception:
             raise Exception("There was an error when deleting a user")
+
