@@ -32,7 +32,7 @@ function Sidebar() {
   return (
     <div>
       <div
-        className={`fixed left-0 top-0 w-[70px] h-full bg-gradient-to-b from-[#4f5038] via-[#82845b] to-[#9c9d6b] shadow-xl transition duration-1000 ${
+        className={`fixed left-0 top-0 w-[70px] h-full bg-[#4f5038] shadow-xl transition duration-1000 ${
           show
             ? "translate-x-0 ease-in-out opacity-100"
             : "-translate-x-full ease-out opacity-40"
@@ -63,9 +63,9 @@ function Sidebar() {
               <BsFillQuestionCircleFill
                 className="shadow-xl"
                 size={27}
-                color="#646445"
-                onMouseOver={({ target }) => (target.style.color = "#383825")}
-                onMouseOut={({ target }) => (target.style.color = "#646445")}
+                color="#c8c888"
+                onMouseOver={({ target }) => (target.style.color = "#919162")}
+                onMouseOut={({ target }) => (target.style.color = "#c8c888")}
               />
             </button>
           </div>
