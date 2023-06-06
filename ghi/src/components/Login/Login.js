@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { BiCopyright } from "react-icons/bi";
 import image from "../../assets/login.jpg";
-import useToken, { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
+import useToken from "@galvanize-inc/jwtdown-for-react";
 
 export default function Login() {
   const navigate = useNavigate();
