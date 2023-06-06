@@ -7,10 +7,10 @@ from queries.user import UserRepo, UserOut, UserOutWithPassword
 class ExampleAuthenticator(Authenticator):
     async def get_account_data(
         self,
-        email: str,
+        username: str,
         repo: UserRepo,
     ):
-        return repo.get_one_user(email)
+        return repo.get_one_user(username)
 
     def get_account_getter(
         self,
@@ -22,7 +22,7 @@ class ExampleAuthenticator(Authenticator):
         return account.hashed_password
 
     def get_account_data_for_cookie(self, account: UserOut):
-        return account.email, UserOut(**account.dict())
+        return account.username, UserOut(**account.dict())
 
 
 authenticator = ExampleAuthenticator(os.environ["SIGNING_KEY"])

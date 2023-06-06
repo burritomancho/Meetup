@@ -67,50 +67,50 @@ async def create_user(
         created_user = user_repo.create_user(user, hashed_password)
     except DuplicateUserError:
         raise HTTPException(
-            status_code=409, detail="User with this email already exists"
+            status_code=409, detail="User with this email or username already exists"
         )
-    form = AccountForm(username=user.email, password=user.password)
+    form = AccountForm(username=user.username, password=user.password)
     token = await authenticator.login(response, request, form, repo)
     return AccountToken(account=created_user, **token.dict())
 
 
-@router.get("/users/{email}", response_model=AccountToken)
+@router.get("/users/{username}", response_model=Optional[UserOut])
 async def get_one_user(
-    email: str,
+    username: str,
     account_data: dict = Depends(authenticator.get_current_account_data),
 ) -> UserOut:
     try:
-        user = user_repo.get_one_user(email)
+        user = user_repo.get_one_user(username)
         return user
     except Exception:
         raise HTTPException(status_code=500, detail="Unexpected error")
 
 
-@router.put("/users/{email}")
+@router.put("/users/{username}")
 async def update_user(
-    email: str,
+    username: str,
     user: UpdateUserModel,
     account_data: dict = Depends(authenticator.get_current_account_data),
 ) -> UserOut:
     try:
-        updated_user = user_repo.update_user(email, user)
+        updated_user = user_repo.update_user(username, user)
         if updated_user is None:
             raise HTTPException(status_code=404, detail="User not found")
         return updated_user
     except DuplicateUserError:
         raise HTTPException(
-            status_code=409, detail="User with this email already exists"
+            status_code=409, detail="User with this email or username already exists"
         )
     except Exception:
         raise HTTPException(status_code=500, detail="Failed to update user")
 
 
-@router.delete("/users/{email}")
+@router.delete("/users/{username}", response_model=bool)
 async def delete_user(
-    email: str,
+    username: str,
     account_data: dict = Depends(authenticator.get_current_account_data),
 ) -> UserOut:
-    deleted_user = user_repo.delete_user(email)
+    deleted_user = user_repo.delete_user(username)
     if deleted_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return {"message": "Successfully deleted user"}

@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { BiCopyright } from "react-icons/bi";
 import image from "../../assets/login.jpg";
-import useToken from "@galvanize-inc/jwtdown-for-react";
+import useToken, { useAuthContext } from "@galvanize-inc/jwtdown-for-react";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -21,14 +21,22 @@ export default function Login() {
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-     login(username, password);
+    try {
+      console.log(username, password);
+      await login(username, password);
+    } catch (error) {
+      console.log(error);
+    }
   };
+  console.log(useAuthContext);
+  console.log(login);
+  const userUrl = `${process.env.REACT_APP_USER_SERVICE_API_HOST}/users`;
+  console.log(userUrl);
   useEffect(() => {
     if (token) {
-      navigate("/profile");
+      navigate("/");
     }
   }, [token, navigate]);
 
@@ -45,9 +53,9 @@ export default function Login() {
             <div className="mb-5">
               <label
                 className="text-sm block font-semibold mb-1"
-                htmlFor="email"
+                htmlFor="username"
               >
-                Email&nbsp;
+                Username&nbsp;
                 <span className="text-red-500 font-normal">*</span>
               </label>
               <input
@@ -55,7 +63,7 @@ export default function Login() {
                 onChange={handleUserNameChange}
                 required
                 type="text"
-                name="email"
+                name="username"
                 value={username}
               />
             </div>
