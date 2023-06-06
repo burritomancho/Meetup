@@ -4,6 +4,7 @@ import UserProfile from "./components/Profile.js/UserProfile";
 import Sidebar from "./components/Sidebar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
+import HangoutPlan from "./components/HangoutPlan";
 
 function App() {
   const domain = /https:\/\/[^/]+/;
@@ -19,6 +20,7 @@ function App() {
           <Route path="/login" element={<Hero />} />
           <Route path="/register" element={<Hero />} />
           <Route path="/profile" element={<UserProfile />} />
+          <Route path="/plan_hangout" element={<HangoutPlan />} />
         </Routes>
         <Sidebar />
       </AuthProvider>
