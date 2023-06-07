@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import useToken from "@galvanize-inc/jwtdown-for-react";
 import Login from "./Login/Login";
 import Register from "./Login/Register";
+import Sidebar from "./Sidebar";
 
 const Hero = () => {
+  const navigate = useNavigate();
+  const { token } = useToken();
   const [show, setShow] = useState(false);
   const [login, setLogin] = useState(false);
   const [register, setRegister] = useState(false);
@@ -13,6 +17,12 @@ const Hero = () => {
   const handleShow = () => {
     setShow();
   };
+
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, [token]);
 
   useEffect(() => {
     if (location.pathname === "/login") {
@@ -92,6 +102,7 @@ const Hero = () => {
           </div>
         </div>
       </div>
+      <Sidebar />
     </>
   );
 };

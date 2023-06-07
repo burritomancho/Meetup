@@ -4,11 +4,13 @@ import { CgProfile } from "react-icons/cg";
 import { BsFillQuestionCircleFill } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
-import { BiLogInCircle } from "react-icons/bi";
+import { BiLogOutCircle } from "react-icons/bi";
 import useToken from "@galvanize-inc/jwtdown-for-react";
+import { AiOutlineCalendar } from "react-icons/ai";
+import { MdPendingActions, MdOutlinePending } from "react-icons/md";
 
-function Sidebar() {
-  const [show, setShow] = useState(false);
+function Logged() {
+  const [show, setShow] = useState(true);
   const [showSidebar, setShowSidebar] = useState(false);
   const navigate = useNavigate();
   const { logout } = useToken();
@@ -26,19 +28,19 @@ function Sidebar() {
   const handleLogout = (e) => {
     e.preventDefault();
     logout();
-    navigate("/home");
+    navigate("/");
   };
 
   return (
     <div>
       <div
-        className={`fixed left-0 top-0 w-[70px] h-full bg-[#4f5038] shadow-xl transition duration-1000 ${
+        className={`fixed left-0 top-0 w-[70px] h-screen bg-[#4f5038] shadow-xl transition duration-1000 ${
           show
             ? "translate-x-0 ease-in-out opacity-100"
             : "-translate-x-full ease-out opacity-40"
         }`}
       >
-        <div className="grid grid-cols-1 gap-y-[780px]">
+        <div className="grid grid-cols-1 h-full">
           <div className="drop-shadow-2xl">
             <Link to="/">
               <div className="cursor-pointer">
@@ -50,15 +52,43 @@ function Sidebar() {
               </div>
             </Link>
             <ul>
+              <Link to="/profile">
+                <li className="text-black border-b-[1px] border-t-[3px] border-[#646445] py-4 hover:bg-[#383825] transition duration-300">
+                  <CgProfile size={26} color="#c8c888" className="mx-auto" />
+                </li>
+              </Link>
+              <Link to="/plan_hangout">
+                <li className="text-black border-b-[1px] border-t-2 border-[#646445] py-4 hover:bg-[#383825] transition duration-300">
+                  <AiOutlineCalendar
+                    size={26}
+                    color="#c8c888"
+                    className="mx-auto"
+                  />
+                </li>
+              </Link>
+              <Link to="/details">
+                <li className="text-black border-b-[3px] border-t-2 border-[#646445] py-4 hover:bg-[#383825] transition duration-300">
+                  <MdPendingActions
+                    size={26}
+                    color="#c8c888"
+                    className="mx-auto"
+                  />
+                </li>
+              </Link>
+
               <li
-                className="text-black border-b-2 border-t-2 border-[#646445] py-4 hover:bg-[#383825] transition duration-300"
+                className="text-black border-b-[3px] border-t-1 border-[#646445] py-4 hover:bg-[#383825] transition duration-300"
                 onClick={handleSidebar}
               >
-                <CgProfile size={26} color="#c8c888" className="mx-auto" />
+                <MdOutlinePending
+                  size={26}
+                  color="#c8c888"
+                  className="mx-auto"
+                />
               </li>
             </ul>
           </div>
-          <div className="mx-auto">
+          <div className="mx-auto flex items-end mb-5">
             <button>
               <BsFillQuestionCircleFill
                 className="shadow-xl"
@@ -93,19 +123,24 @@ function Sidebar() {
             </div>
             <div>
               <ul>
-                <Link to="/login" onClick={handleSidebar}>
+                <Link to="/profile" onClick={handleSidebar}>
+                  <li className="px-3 py-2 pl-5 border-b-2 border-[#646445] text-lg font-semibold text-[#c8c888] hover:text-[#cbcb86] hover:bg-[#383825]">
+                    Profile
+                  </li>
+                </Link>
+                <Link to="/calendar" onClick={handleSidebar}>
+                  <li className="px-3 py-2 pl-5 border-b-2 border-[#646445] text-lg font-semibold text-[#c8c888] hover:text-[#cbcb86] hover:bg-[#383825]">
+                    Calendar
+                  </li>
+                </Link>
+                <Link to="/invites" onClick={handleSidebar}>
+                  <li className="px-3 py-2 pl-5 border-b-2 border-[#646445] text-lg font-semibold text-[#c8c888] hover:text-[#cbcb86] hover:bg-[#383825]">
+                    Invites
+                  </li>
+                </Link>
+                <Link to="/" onClick={handleLogout}>
                   <li className="px-3 py-2 flex border-b-2 border-[#646445] text-lg font-semibold text-[#c8c888] hover:text-[#cbcb86] hover:bg-[#383825]">
-                    <BiLogInCircle size={20} className="my-auto m-1" />
-                    Login
-                  </li>
-                </Link>
-                <Link to="/register" onClick={handleSidebar}>
-                  <li className="px-3 py-2 pl-5 border-b-2 border-[#646445] text-lg font-semibold text-[#c8c888] hover:text-[#cbcb86] hover:bg-[#383825]">
-                    Register
-                  </li>
-                </Link>
-                <Link to="/login" onClick={handleLogout}>
-                  <li className="px-3 py-2 pl-5 border-b-2 border-[#646445] text-lg font-semibold text-[#c8c888] hover:text-[#cbcb86] hover:bg-[#383825]">
+                    <BiLogOutCircle size={20} className="my-auto m-1" />
                     Logout
                   </li>
                 </Link>
@@ -118,4 +153,4 @@ function Sidebar() {
   );
 }
 
-export default Sidebar;
+export default Logged;

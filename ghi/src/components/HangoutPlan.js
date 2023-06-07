@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import QRCode from "../assets/QRlocalhost3k.png";
 import { BsArrowUpRightSquare } from "react-icons/bs";
+import Logged from "./Logged";
 
 export default function HangoutPlan() {
   return (
@@ -28,6 +29,7 @@ export default function HangoutPlan() {
           </div>
         </div>
       </div>
+      <Logged />
     </div>
   );
 }
