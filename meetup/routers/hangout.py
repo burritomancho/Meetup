@@ -61,6 +61,18 @@ async def get_users_in_hangout(
         raise HTTPException(status_code=500, detail="Unexpected error")
 
 
+@router.get("/hangouts/{username}")
+async def get_current_user_hangouts(
+    username: str,
+    account_data: dict = Depends(authenticator.get_current_account_data),
+):
+    try:
+        hangout = hangout_repo.get_current_user_hangouts(username)
+        return hangout
+    except Exception:
+        raise HTTPException(status_code=500, detail="Unexpected error")
+
+
 @router.get("/hangouts/{name}")
 async def get_one_hangout(
     name: str,
@@ -73,23 +85,16 @@ async def get_one_hangout(
         raise HTTPException(status_code=500, detail="Unexpected error")
 
 
-@router.put("/hangouts/{name}")
-async def update_hangout(
-    name: str,
-    hangout: UpdateHangoutModel,
+@router.get("/hangouts/{username}")
+async def get_current_user_hangouts(
+    username: str,
     account_data: dict = Depends(authenticator.get_current_account_data),
-) -> HangoutOut:
+):
     try:
-        updated_hangout = hangout_repo.update_hangout(name, hangout)
-        if updated_hangout is None:
-            raise HTTPException(status_code=404, detail="Hangout not found")
-        return updated_hangout
-    except DuplicateHangoutName:
-        raise HTTPException(
-            status_code=409, detail="Hangout with this name already exists"
-        )
+        hangout = hangout_repo.get_current_user_hangouts(username)
+        return hangout
     except Exception:
-        raise HTTPException(status_code=500, detail="Failed to update hangout")
+        raise HTTPException(status_code=500, detail="Unexpected error")
 
 
 @router.delete("/hangouts/{name}")

@@ -5,7 +5,7 @@ const HangoutList = () => {
 
   const yelpDetails = async (hangout) => {
     const key = process.env.YELP_API_KEY;
-    const url = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3";
+    const url = "https://api.yelp.com/v3/businesses/search";
     const headers = {
       "Authorization": `Bearer ${key}`,
     };

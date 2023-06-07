@@ -63,8 +63,10 @@ class HangoutRepo:
             )
 
     def get_current_user_hangouts(self, username: str) -> Cursor:
+        print("working")
         try:
             hangouts = collection.find({"friends": username}, {"_id": 0})
+            print(hangouts)
             return list(hangouts)
         except Exception:
             raise Exception(
