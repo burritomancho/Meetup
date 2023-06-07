@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Logged from "../Logged";
 
 export default function UserProfile() {
   const [user, setUser] = useState("");
@@ -40,6 +41,7 @@ export default function UserProfile() {
           <div className="col-span-4 bg-gray-500 pt-16 text-center">grid 1</div>
           <div className="col-span-8 bg-gray-800 pl-10 pt-16">grid 2</div>
         </div>
+        <Logged />
       </div>
     </>
   );

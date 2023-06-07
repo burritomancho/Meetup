@@ -29,9 +29,10 @@ export default function Login() {
       console.log(error);
     }
   };
+
   useEffect(() => {
     if (token) {
-      navigate("/home");
+      navigate("/plan_hangout");
     }
   }, [token, navigate]);
 

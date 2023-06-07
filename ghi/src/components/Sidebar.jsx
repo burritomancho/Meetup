@@ -3,15 +3,12 @@ import logo from "../assets/logo.png";
 import { CgProfile } from "react-icons/cg";
 import { BsFillQuestionCircleFill } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { BiLogInCircle } from "react-icons/bi";
-import useToken from "@galvanize-inc/jwtdown-for-react";
 
 function Sidebar() {
   const [show, setShow] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
-  const navigate = useNavigate();
-  const { logout } = useToken();
 
   const handleSidebar = () => {
     setShowSidebar(!showSidebar);
@@ -23,12 +20,6 @@ function Sidebar() {
     }, 100);
   }, []);
 
-  const handleLogout = (e) => {
-    e.preventDefault();
-    logout();
-    navigate("/home");
-  };
-
   return (
     <div>
       <div
@@ -38,7 +29,7 @@ function Sidebar() {
             : "-translate-x-full ease-out opacity-40"
         }`}
       >
-        <div className="grid grid-cols-1 gap-y-[780px]">
+        <div className="grid grid-cols-1 h-full">
           <div className="drop-shadow-2xl">
             <Link to="/">
               <div className="cursor-pointer">
@@ -58,7 +49,7 @@ function Sidebar() {
               </li>
             </ul>
           </div>
-          <div className="mx-auto">
+          <div className="mx-auto flex items-end mb-5">
             <button>
               <BsFillQuestionCircleFill
                 className="shadow-xl"
@@ -102,11 +93,6 @@ function Sidebar() {
                 <Link to="/register" onClick={handleSidebar}>
                   <li className="px-3 py-2 pl-5 border-b-2 border-[#646445] text-lg font-semibold text-[#c8c888] hover:text-[#cbcb86] hover:bg-[#383825]">
                     Register
-                  </li>
-                </Link>
-                <Link to="/login" onClick={handleLogout}>
-                  <li className="px-3 py-2 pl-5 border-b-2 border-[#646445] text-lg font-semibold text-[#c8c888] hover:text-[#cbcb86] hover:bg-[#383825]">
-                    Logout
                   </li>
                 </Link>
               </ul>
