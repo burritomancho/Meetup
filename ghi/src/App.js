@@ -5,6 +5,7 @@ import Sidebar from "./components/Sidebar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import HangoutPlan from "./components/HangoutPlan";
+import Details from "./components/Details";
 
 function App() {
   const domain = /https:\/\/[^/]+/;
@@ -12,17 +13,15 @@ function App() {
 
   return (
     <BrowserRouter basename={basename}>
-      <AuthProvider
-        baseUrl={`${process.env.REACT_APP_USER_SERVICE_API_HOST}`}
-      >
+      <AuthProvider baseUrl={`${process.env.REACT_APP_USER_SERVICE_API_HOST}`}>
         <Routes>
           <Route path="/" element={<Hero />} />
           <Route path="/login" element={<Hero />} />
           <Route path="/register" element={<Hero />} />
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/plan_hangout" element={<HangoutPlan />} />
+          <Route path="/details" element={<Details />} />
         </Routes>
-        <Sidebar />
       </AuthProvider>
     </BrowserRouter>
   );
