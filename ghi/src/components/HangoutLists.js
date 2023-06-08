@@ -4,30 +4,19 @@ const HangoutList = () => {
   const [hangoutData, setHangoutData] = useState([]);
 
   const yelpDetails = async (hangout) => {
-    const key = process.env.YELP_API_KEY;
-    const url = "https://api.yelp.com/v3/businesses/search";
-    const headers = {
-      "Authorization": `Bearer ${key}`,
-    };
-
-    const params = {
-      term: hangout.location,
-      location: "New York City"
-    };
-
-    const queryString = new URLSearchParams(params).toString();
-    const fullUrl = `${url}?${queryString}`;
+    const yelpUrl = `${process.env.REACT_APP_USER_SERVICE_API_HOST}/api/yelp_image?location=${hangout.location}`;
 
     try {
-      const response = await fetch(fullUrl, {
-        headers: headers
-      });
+      const response = await fetch(yelpUrl, {
+        credentials: "include",
+        "hangout": hangout.location
+      })
       if (response.ok) {
         const data = await response.json();
-        const imageUrl = data.businesses[0].image_url;
-
         // Update the hangoutData state with the image URL
-        setHangoutData(imageUrl)
+        console.log(data)
+        // hangout["image"] = data
+        // console.log(hangout["image"])
       } else {
         console.error(`Request failed with status code ${response.status}`);
       }
@@ -83,7 +72,7 @@ const HangoutList = () => {
                   className="p-3 max-w-[250px] max-h-[250px] text-left shadow-md cursor-pointer hover:bg-gray-200"
                   style={{
                     boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
-                    backgroundImage: `url(${hangout.imageUrl})`,
+                    backgroundImage: `url(${hangout["image"]})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center"
                   }}

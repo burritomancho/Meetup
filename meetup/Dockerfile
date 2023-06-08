@@ -12,6 +12,7 @@ COPY main.py main.py
 # COPY queries queries
 # COPY routers routers
 
+RUN python -m pip install requests
 RUN python -m pip install -r requirements.txt
 
 # !! PORT env var needs to match with exposed port in caprover dashboard
