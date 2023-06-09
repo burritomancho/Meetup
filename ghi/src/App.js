@@ -1,11 +1,11 @@
 import "./App.css";
 import Hero from "./components/Hero.jsx";
 import UserProfile from "./components/Profile.js/UserProfile";
-import Sidebar from "./components/Sidebar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import HangoutPlan from "./components/HangoutPlan";
 import Details from "./components/Details";
+import SelectCalendar from "./components/SelectCalendar";
 
 function App() {
   const domain = /https:\/\/[^/]+/;
@@ -21,6 +21,7 @@ function App() {
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/plan_hangout" element={<HangoutPlan />} />
           <Route path="/details" element={<Details />} />
+          <Route path="/calendar" element={<SelectCalendar />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

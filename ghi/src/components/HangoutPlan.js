@@ -58,7 +58,7 @@ export default function HangoutPlan() {
         <div className="rounded-xl p-2 border border-black-2 lg:h-1/3 md:h-1/3 sm:h-1/2 h-3/4 w-[90%]">
           <div className="p-2">Invite Your Hangout Companions</div>
           <div className="p-6 rounded-xl justify-center items-center text-center">
-            <form onSubmit={sendEmail} className="grid-row-2 grid">
+            <form onSubmit={sendEmail} className="grid-row-2 grid justify-center items-center">
               <input
                 type="email"
                 placeholder="Recipient Email"
