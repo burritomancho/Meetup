@@ -45,9 +45,7 @@ async def get_token(
 
 
 @router.get("/users", response_model=List[UserOut])
-async def get_all_users(
-    account_data: dict = Depends(authenticator.get_current_account_data),
-) -> List[UserOut]:
+async def get_all_users() -> List[UserOut]:
     try:
         users = user_repo.get_all_users()
         return [UserOut(**user) for user in users]

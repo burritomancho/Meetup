@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 from pydantic import BaseModel
 from queries.pool import conn
-from typing import Optional
+from typing import Optional, Dict
 from pymongo.errors import DuplicateKeyError
 from pymongo.cursor import Cursor
 
@@ -14,18 +14,21 @@ class UserIn(BaseModel):
     username: Optional[str]
     email: Optional[str]
     password: Optional[str]
+    hangouts: Optional[Dict[str, bool]]
 
 
 class UserOut(BaseModel):
     id: Optional[int]
     username: str
     email: str
+    hangouts: Optional[Dict[str, bool]]
 
 
 class UpdateUserModel(BaseModel):
     username: Optional[str]
     email: Optional[str]
     password: Optional[str]
+    hangouts: Optional[Dict[str, bool]]
 
 
 class DuplicateUserError(Exception):
@@ -90,3 +93,16 @@ class UserRepo:
         except Exception:
             raise Exception("There was an error when deleting a user")
 
+    def user_hangouts(self, username: str, hangout_id: str):
+        existing_user = self.get_one_user(username)
+        if existing_user:
+            updated_hangouts = existing_user.hangouts.copy()
+            updated_hangouts[hangout_id] = True
+            updated_user = existing_user.copy(update={"hangouts": updated_hangouts})
+            document = updated_user.dict()
+            try:
+                collection.replace_one({"username": username}, document)
+                return updated_user
+            except Exception as error:
+                raise HTTPException(status_code=500, detail=str(error))
+        return None
