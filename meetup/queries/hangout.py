@@ -3,42 +3,51 @@ from pydantic import BaseModel
 from queries.pool import conn
 from typing import Optional, List, Union
 from datetime import date, datetime
-from pymongo.errors import DuplicateKeyError
 from pymongo.cursor import Cursor
+from bson import json_util
+from pymongo.errors import DuplicateKeyError
 
 db = conn["Hangouts"]
 collection = db["hangouts"]
 collection.create_index("name", unique=True)
 
+class Friend(BaseModel):
+    username: str
+    selected_date: str
+
 
 class HangoutIn(BaseModel):
     location: str
-    friends: List[str]
-    days: date
+    friends: List[Friend]
+    dates: List[date]
+    finalized_date: Optional[str]
+    host: str
     name: str
-    notes: str
+    description: str
 
 
 class HangoutOut(BaseModel):
-    hangout_id: Optional[Union[int, str]]
     location: str
-    friends: List[str]
-    days: date
+    friends: List[Friend]
+    dates: List[str]
+    finalized_date: Optional[str]
+    host: str
     name: str
-    notes: str
+    description: str
 
 
 class UpdateHangoutModel(BaseModel):
     location: Optional[str]
-    friends: Optional[List[str]]
-    days: Optional[date]
+    friends: Optional[List[Friend]]
+    dates: Optional[List[date]]
+    finalized_date: Optional[date]
+    host: Optional[str]
     name: Optional[str]
-    notes: Optional[str]
+    description: Optional[str]
 
 
-class DuplicateHangoutName(ValueError):
-    def __init__(self):
-        super().__init__("Hangout with this name already exists")
+class DuplicateHangoutError(Exception):
+    pass
 
 
 class HangoutRepo:
@@ -62,30 +71,26 @@ class HangoutRepo:
                 "There was an error when getting users in the hangout"
             )
 
-    def get_current_user_hangouts(self, username: str) -> Cursor:
-        print("working")
+    def get_current_user_hangouts(self, username: str) -> List[HangoutOut]:
         try:
-            hangouts = collection.find({"friends": username}, {"_id": 0})
-            print(hangouts)
-            return list(hangouts)
+            hangouts = collection.find({"friends.username": username})
+            return [HangoutOut(**hangout) for hangout in hangouts]
         except Exception:
-            raise Exception(
-                "There was an error getting your hangouts"
-            )
+            raise Exception("There was an error getting your hangouts")
+
 
     def create_hangout(self, hangout: HangoutIn) -> HangoutOut:
         inserted_hangout = hangout.dict()
-        inserted_hangout["days"] = datetime.combine(
-            inserted_hangout["days"], datetime.min.time()
-        )
+        for friend in inserted_hangout["friends"]:
+            friend["selected_date"] = str(friend["selected_date"])
+        inserted_hangout["dates"] = [str(d) for d in inserted_hangout["dates"]]
+        inserted_hangout["finalized_date"] = str(inserted_hangout["finalized_date"])
         try:
             result = collection.insert_one(inserted_hangout)
-            inserted_hangout["hangout_id"] = str(
-                result.inserted_id
-            )  # Convert ObjectId to string
+            inserted_hangout["hangout_id"] = str(result.inserted_id)
             return HangoutOut(**inserted_hangout)
         except DuplicateKeyError:
-            raise DuplicateHangoutName()
+            raise DuplicateHangoutError()
         except Exception as e:
             raise Exception(
                 "There was an error when creating a hangout: " + str(e)
@@ -108,16 +113,25 @@ class HangoutRepo:
         existing_hangout = self.get_one_hangout(name)
         if existing_hangout:
             updated_data = hangout.dict(exclude_unset=True)
-            # updated_hangout = existing_hangout.copy(update=updated_data)
-            updated_document = {"set": updated_data}
+            for friend in updated_data["friends"]:
+                friend["selected_date"] = str(friend["selected_date"])
+            updated_data["dates"] = [str(d) for d in updated_data["dates"]]
+            updated_data["finalized_date"] = str(updated_data["finalized_date"])
+            updated_document = {"$set": updated_data}
             try:
                 collection.update_one({"name": name}, updated_document)
-                return updated_data
+                collection_users = db["user_hangouts"]
+                collection_users.update_many(
+                    {"name": name},
+                    updated_document
+                )
+                return HangoutOut(**updated_data)
             except DuplicateKeyError:
-                raise DuplicateHangoutName()
+                raise DuplicateHangoutError()
             except Exception:
                 raise Exception("There was an error when updating a hangout")
         return None
+
 
     def delete_hangout(self, name: str) -> Optional[HangoutOut]:
         hangout = self.get_one_hangout(name)
