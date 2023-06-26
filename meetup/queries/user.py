@@ -11,9 +11,9 @@ collection.create_index([("username", 1), ("email", 1)], unique=True)
 
 
 class UserIn(BaseModel):
-    username: Optional[str]
-    email: Optional[str]
-    password: Optional[str]
+    username: str
+    email: str
+    password: str
     hangouts: Optional[Dict[str, bool]]
 
 
@@ -93,11 +93,13 @@ class UserRepo:
         except Exception:
             raise Exception("There was an error when deleting a user")
 
-    def user_hangouts(self, username: str, hangout_id: str):
+    def user_hangouts(self, username: str, old_hangout_id: str, new_hangout_id: str):
         existing_user = self.get_one_user(username)
         if existing_user:
             updated_hangouts = existing_user.hangouts.copy()
-            updated_hangouts[hangout_id] = True
+            if old_hangout_id in updated_hangouts:
+                del updated_hangouts[old_hangout_id]
+            updated_hangouts[new_hangout_id] = True
             updated_user = existing_user.copy(update={"hangouts": updated_hangouts})
             document = updated_user.dict()
             try:

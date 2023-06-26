@@ -4,10 +4,13 @@ from queries.pool import conn
 from typing import Optional, List, Union
 from datetime import date, datetime
 from pymongo.cursor import Cursor
-from bson import json_util
+from queries.user import UserRepo
+
 
 db = conn["Hangouts"]
 collection = db["hangouts"]
+user_repo = UserRepo()
+
 
 class Friend(BaseModel):
     username: str
@@ -33,6 +36,7 @@ class HangoutOut(BaseModel):
 
 
 class UpdateHangoutModel(BaseModel):
+    hangout_id: Optional[str]
     location: Optional[str]
     friends: Optional[List[Friend]]
     dates: Optional[List[date]]
@@ -80,6 +84,9 @@ class HangoutRepo:
         try:
             result = collection.insert_one(inserted_hangout)
             inserted_hangout["hangout_id"] = str(result.inserted_id)
+            for friend in inserted_hangout["friends"]:
+                username = friend["username"]
+                user_repo.user_hangouts(username, inserted_hangout["name"])
             return HangoutOut(**inserted_hangout)
         except Exception as e:
             raise Exception(
@@ -103,20 +110,25 @@ class HangoutRepo:
         existing_hangout = self.get_one_hangout(name)
         if existing_hangout:
             updated_data = hangout.dict(exclude_unset=True)
+            for friend in updated_data["friends"]:
+                friend["selected_date"] = str(friend["selected_date"])
+            updated_data["dates"] = [str(d) for d in updated_data["dates"]]
+            updated_data["finalized_date"] = str(updated_data["finalized_date"])
             updated_document = {"$set": updated_data}
             try:
                 collection.update_one({"name": name}, updated_document)
-                collection_users = db["user_hangouts"]
+                collection_users = db["users"]
                 collection_users.update_many(
-                    {"name": name},
+                    {"hangouts.name": name},
                     updated_document
                 )
-
+                for friend in updated_data["friends"]:
+                    username = friend["username"]
+                    user_repo.user_hangouts(username, name, updated_data["name"])
                 return HangoutOut(**updated_data)
             except Exception:
                 raise Exception("There was an error when updating a hangout")
         return None
-
 
     def delete_hangout(self, name: str) -> Optional[HangoutOut]:
         hangout = self.get_one_hangout(name)
