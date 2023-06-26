@@ -8,6 +8,7 @@ from bson import json_util
 
 db = conn["Hangouts"]
 collection = db["hangouts"]
+collection.create_index("name", unique=True)
 
 class Friend(BaseModel):
     username: str
