@@ -58,15 +58,15 @@ class UserRepo:
             raise Exception("There was an error when creating a user")
 
     def get_one_user(self, username: str) -> Optional[UserOutWithPassword]:
-        try:
-            user = collection.find_one({"username": username})
-            if user:
-                user["hashed_password"] = user.get("hashed_password", "")
-                return UserOutWithPassword(**user)
-            else:
-                raise HTTPException(status_code=404, detail="User not found")
-        except Exception:
-            raise Exception("There was an error when getting a user")
+        # try:
+        user = collection.find_one({"username": username})
+        if user:
+            user["hashed_password"] = user.get("hashed_password", "")
+            return UserOutWithPassword(**user)
+        else:
+            raise HTTPException(status_code=404, detail="User not found")
+        # except Exception:
+        #     raise Exception("There was an error when getting a user")
 
     def update_user(self, username: str, user: UpdateUserModel) -> Optional[UserOut]:
         existing_user = self.get_one_user(username)
@@ -107,4 +107,23 @@ class UserRepo:
                 return updated_user
             except Exception as error:
                 raise HTTPException(status_code=500, detail=str(error))
+        return None
+
+    def delete_user_hangout(self, username: str, name: str):
+        db = conn["Hangouts"]
+        collection2 = db["hangouts"]
+        existing_user = collection.find_one({"username": username})
+        existing_hangout = collection2.find_one({"name": name})
+        if existing_user and existing_hangout:
+            user_hangouts = existing_user["hangouts"]
+            hangout_users = existing_hangout["friends"]
+            print(hangout_users)
+            if name in user_hangouts:
+                del user_hangouts[name]
+                collection.replace_one({"username": username}, existing_user)
+            for friend in hangout_users:
+                if friend.get("username") == username:
+                    hangout_users.remove(friend)
+                    collection2.replace_one({"name": name}, existing_hangout)
+                    return True
         return None

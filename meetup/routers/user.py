@@ -77,11 +77,8 @@ async def get_one_user(
     username: str,
     account_data: dict = Depends(authenticator.get_current_account_data),
 ) -> UserOut:
-    try:
-        user = user_repo.get_one_user(username)
-        return user
-    except Exception:
-        raise HTTPException(status_code=500, detail="Unexpected error")
+    user = user_repo.get_one_user(username)
+    return user
 
 
 @router.put("/users/{username}")
@@ -112,3 +109,15 @@ async def delete_user(
     if deleted_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return {"message": "Successfully deleted user"}
+
+
+@router.delete("/users/{username}/{name}")
+async def delete_user_hangout(
+    username: str,
+    name: str,
+    account_data: dict = Depends(authenticator.get_current_account_data),
+) -> UserOut:
+    deleted_user_hangout = user_repo.delete_user_hangout(username, name)
+    if deleted_user_hangout is None:
+        raise HTTPException(status_code=404, detail="User hangout not found")
+    return {"message": "Successfully deleted user hangout"}
