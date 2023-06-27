@@ -13,6 +13,9 @@ collection.create_index("name", unique=True)
 user_repo = UserRepo()
 
 
+
+
+
 class Friend(BaseModel):
     username: str
     selected_date: str
@@ -46,7 +49,6 @@ class UpdateHangoutModel(BaseModel):
     description: Optional[str]
 
 
-
 class HangoutRepo:
     def get_all_hangouts(self) -> Cursor:
         try:
@@ -75,13 +77,14 @@ class HangoutRepo:
         except Exception:
             raise Exception("There was an error getting your hangouts")
 
-
     def create_hangout(self, hangout: HangoutIn) -> HangoutOut:
         inserted_hangout = hangout.dict()
         for friend in inserted_hangout["friends"]:
             friend["selected_date"] = str(friend["selected_date"])
         inserted_hangout["dates"] = [str(d) for d in inserted_hangout["dates"]]
-        inserted_hangout["finalized_date"] = str(inserted_hangout["finalized_date"])
+        inserted_hangout["finalized_date"] = str(
+            inserted_hangout["finalized_date"]
+        )
         try:
             result = collection.insert_one(inserted_hangout)
             inserted_hangout["hangout_id"] = str(result.inserted_id)
@@ -107,7 +110,9 @@ class HangoutRepo:
         except Exception:
             raise Exception("There was an error when getting a hangout")
 
-    def update_hangout(self, name: str, hangout: UpdateHangoutModel) -> Optional[HangoutOut]:
+    def update_hangout(
+        self, name: str, hangout: UpdateHangoutModel
+    ) -> Optional[HangoutOut]:
         existing_hangout = self.get_one_hangout(name)
         if existing_hangout:
             updated_data = hangout.dict(exclude_unset=True)
@@ -120,12 +125,13 @@ class HangoutRepo:
                 collection.update_one({"name": name}, updated_document)
                 collection_users = db["users"]
                 collection_users.update_many(
-                    {"hangouts.name": name},
-                    updated_document
+                    {"hangouts.name": name}, updated_document
                 )
                 for friend in updated_data["friends"]:
                     username = friend["username"]
-                    user_repo.user_hangouts(username, updated_data["name"])
+                    user_repo.user_hangouts(
+                        username, name, updated_data["name"]
+                    )
                 return HangoutOut(**updated_data)
             except Exception as e:
                 raise Exception(e)
