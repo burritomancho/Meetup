@@ -25,6 +25,7 @@ export default function Login() {
     event.preventDefault();
     try {
       await login(username, password);
+      navigate("/list")
     } catch (error) {
       console.log(error);
     }
@@ -32,7 +33,7 @@ export default function Login() {
 
   useEffect(() => {
     if (token) {
-      navigate("/plan_hangout");
+      navigate("/list");
     }
   }, [token, navigate]);
 

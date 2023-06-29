@@ -55,7 +55,7 @@ export default function Register() {
             Meet<span className="text-black">Up</span>
             <BiCopyright size={15} className="my-auto mx-1" />
           </h1>
-          <h1 className="text-5xl mb-7 font-bold text-center">Register</h1>
+          <h1 className="text-5xl mb-7 font-bold text-center pt-5">Register</h1>
           <form onSubmit={handleSubmit} id="new-user">
             <div className="mb-5">
               <label
