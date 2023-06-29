@@ -5,11 +5,11 @@ key = os.environ["YELP_API_KEY"]
 
 
 class YelpCalls:
-    def get_single_location(self, city: str, location: str):
+    def get_single_location(self, city: str, term: str):
         yelp_url = "https://api.yelp.com/v3/businesses/search"
         params = {
             "location": city,
-            "term": location,
+            "term": term,
             "sort_by": "distance",
             "limit": 20
         }

@@ -21,6 +21,7 @@ const HangoutPlan = () => {
   const handleName = (event) => setName(event.target.value)
   const handleDates = (event) => setDates(event.target.value)
 
+  const yelpUrl =
   if (!token) {
     useNavigate("/login")
   }
