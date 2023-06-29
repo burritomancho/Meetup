@@ -1,111 +1,109 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import useToken from "@galvanize-inc/jwtdown-for-react";
 import { BsArrowUpRightSquare } from "react-icons/bs";
-import emailjs from "emailjs-com";
 import Logged from "./Logged";
+import React, { useState } from 'react';
 
-export default function HangoutPlan() {
-  const [recipientEmail, setRecipientEmail] = useState("");
-  const [user, setUser] = useState("");
+const HangoutPlan = () => {
+  const { token } = useToken();
+  const [friends, setFriends] = useState([]);
+  const [location, setLocation] = useState('');
+  const [dates, setDates] = useState([]);
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [finalDate, setFinalDate] = useState('');
 
-  const handleRecipientEmailChange = (e) => {
-    setRecipientEmail(e.target.value);
-  };
+  const handleLocationChange = (event) => setLocation(event.target.value);
+  const handleDescriptionChange = (event) => setDescription(event.target.value);
+  const handleFriendsChange = (event) => setFriends(event.target.value)
+  const handleName = (event) => setName(event.target.value)
+  const handleDates = (event) => setDates(event.target.value)
 
-  const fetchUser = async () => {
-    const url = `${process.env.REACT_APP_USER_SERVICE_API_HOST}/token`;
-    const response = await fetch(url, {
-      method: "GET",
-      credentials: "include",
-    });
-    if (response.ok) {
-      const data = await response.json();
-      setUser(data.account);
-    }
-  };
+  if (!token) {
+    useNavigate("/login")
+  }
 
-  useEffect(() => {
-    fetchUser();
-  }, []);
+	const [isSuccess, setIsSuccess] = useState(false);
 
-  const sendEmail = (e) => {
-    e.preventDefault();
-    emailjs
-      .send(
-        "service_6sd6o2c",
-        "template_l1o0rqa",
-        {
-          from_name: `${user.username}`,
-          message:
-            "Hello! You're invited to join my hangout. Let's schedule and have a great time together!",
-          to_email: recipientEmail,
-        },
-        "YoA0FOcSSs_2nc0Xo"
-      )
-      .then((response) => {
-        console.log("Email sent successfully!", response.status, response.text);
-        setRecipientEmail("");
-      })
-      .catch((error) => {
-        console.error("Error sending email:", error);
-      });
-  };
+	// const sendEmail = (e) => {
+	// 	e.preventDefault();
 
-  return (
-    <div className="pl-16">
-      <h3 className="text-center pt-20">Plan a Hangout!</h3>
-      <div className="pl-10 min-h-screen text-center py-16 grid lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2">
-        <div className="rounded-xl p-2 border border-black-2 lg:h-1/3 md:h-1/3 sm:h-1/2 h-3/4 w-[90%]">
-          <div className="p-2">Invite Your Hangout Companions</div>
-          <div className="p-6 rounded-xl justify-center items-center text-center">
-            <form onSubmit={sendEmail} className="grid-row-2 grid justify-center items-center">
-              <input
-                type="email"
-                placeholder="Recipient Email"
-                value={recipientEmail}
-                onChange={handleRecipientEmailChange}
-                required
-                className="text-center mb-2 p-1"
-              />
-              <button
-                type="submit"
-                className="font-semibold text-center border-black border py-1 w-20 mx-auto rounded-2xl hover:bg-gray-200"
-              >
-                Send
-              </button>
-            </form>
-          </div>
-        </div>
-        <div className="rounded-xl p-2 border border-black-2 lg:h-1/3 md:h-1/3 sm:h-1/2 h-3/4 w-[90%]">
-          <div className="p-2">Select a Date and Time</div>
-          <div className="p-6 grid grid-row-2 justify-center items-end text-center rounded-xl">
-            <Link
-              to="/calendar"
-              className="duration-300 transition hover:scale-105"
-            >
-              Access Calendar
-            </Link>
-            <div className="flex justify-center">
-              <BsArrowUpRightSquare className="h-6 w-6" />
-            </div>
-          </div>
-        </div>
-        <div className="rounded-xl p-2 border border-black-2 lg:h-1/3 md:h-1/3 sm:h-1/2 h-3/4 w-[90%]">
-          <div className="p-2">Discover a Hangout Location</div>
-          <div className="p-6 grid grid-row-2 justify-center items-end text-center rounded-xl">
-            <a
-              href="yelp.com"
-              className="duration-300 transition hover:scale-105"
-            >
-              Explore on Yelp
-            </a>
-            <div className="flex justify-center">
-              <BsArrowUpRightSquare className="h-6 w-6" />
-            </div>
-          </div>
-        </div>
-      </div>
-      <Logged />
-    </div>
-  );
-}
+	// 	const serviceId = 'service_zbtm7r2';
+	// 	const templateId = 'template_cew9jp9';
+	// 	const key = 'aRPRU3-dmvoINGpXp'
+
+	// 	emailjs.sendForm(serviceId, templateId, e.target, key)
+	// 		.then(() => {
+	// 		console.log('Email sent successfully');
+	// 		setIsSuccess(true);
+	// 		setFormData({
+	// 			name: '',
+	// 			email: '',
+	// 			subject: '',
+	// 			message: '',
+	// 		});
+	// 		// Perform any additional actions after successful email sending
+	// 		}, (error) => {
+	// 		console.log('Error sending email:', error);
+	// 		// Handle any errors that occur during email sending
+	// 		});
+	// };
+
+	return (
+		<div className="w-full">
+			<div className="leading-loose">
+			<form className="max-w-xl mx-auto p-6 bg-secondary-light dark:bg-secondary-dark rounded-xl shadow-xl text-left" onSubmit={sendEmail}>
+				<p>
+					<h2 className="text-2xl font-medium text-primary-dark dark:text-primary-light mb-8">Plan a Hangout!</h2>
+				</p>
+				{isSuccess && (
+					<div className="bg-green-200 text-green-700 py-2 px-4 rounded mb-4">
+						Hangout planned successfully!
+					</div>
+				)}
+				<div className="mb-4">
+					<label className="block mb-2 text-lg text-primary-dark dark:text-primary-light" htmlFor="name">Your Name</label>
+					<input
+					className="w-full px-4 py-2 border border-gray-300 dark:border-primary-dark border-opacity-50 text-primary-dark dark:text-secondary-light bg-ternary-light dark:bg-ternary-dark rounded-md shadow-sm"
+					type="text"
+					id="name"
+					name="name"
+					placeholder="Your Name"
+					value={formData.name}
+					onChange={handleChange}
+					/>
+				</div>
+				<div className="mb-4">
+					<label className="block mb-2 text-lg text-primary-dark dark:text-primary-light" htmlFor="email">Your Email</label>
+					<input
+					className="w-full px-4 py-2 border border-gray-300 dark:border-primary-dark border-opacity-50 text-primary-dark dark:text-secondary-light bg-ternary-light dark:bg-ternary-dark rounded-md shadow-sm"
+					type="email"
+					id="email"
+					name="email"
+					placeholder="Your Email"
+					value={formData.email}
+					onChange={handleChange}
+					/>
+				</div>
+				<div className="mb-4">
+					<label className="block mb-2 text-lg text-primary-dark dark:text-primary-light" htmlFor="message">Your Message</label>
+					<textarea
+					className="w-full px-4 py-2 border border-gray-300 dark:border-primary-dark border-opacity-50 text-primary-dark dark:text-secondary-light bg-ternary-light dark:bg-ternary-dark rounded-md shadow-sm"
+					id="message"
+					name="message"
+					rows="6"
+					placeholder="Your Message"
+					value={formData.message}
+					onChange={handleChange}
+					></textarea>
+				</div>
+				<button className="w-full px-4 py-2 mt-4 text-lg text-white bg-indigo-500 hover:bg-indigo-600 rounded-lg" type="submit">Send</button>
+				</form>
+			</div>
+		</div>
+	);
+};
+
+export default ContactForm;
