@@ -9,11 +9,14 @@ class YelpCalls:
         yelp_url = "https://api.yelp.com/v3/businesses/search"
         params = {
             "location": city,
-            "term": location
+            "term": location,
+            "sort_by": "distance",
+            "limit": 20
         }
         headers = {
             "Authoriztion": f"Bearer {key}",
             "Content-Type": "application/json",
         }
         response = requests.get(yelp_url, params=params, headers=headers)
-        data = respo
+        data = response.json()
+        return data
