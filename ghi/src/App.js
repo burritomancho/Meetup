@@ -1,5 +1,6 @@
 import "./App.css";
 import Hero from "./components/Hero.jsx";
+import HangoutLists from "./components/HangoutLists.js"
 import UserProfile from "./components/Profile.js/UserProfile";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
@@ -21,7 +22,7 @@ function App() {
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/plan_hangout" element={<HangoutPlan />} />
           <Route path="/details" element={<Details />} />
-          <Route path="/calendar" element={<SelectCalendar />} />
+          <Route path="/home" element={<HangoutLists />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

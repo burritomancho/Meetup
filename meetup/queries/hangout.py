@@ -110,9 +110,7 @@ class HangoutRepo:
         except Exception:
             raise Exception("There was an error when getting a hangout")
 
-    def update_hangout(
-        self, name: str, hangout: UpdateHangoutModel
-    ) -> Optional[HangoutOut]:
+    def update_hangout(self, name: str, hangout: UpdateHangoutModel) -> Optional[HangoutOut]:
         existing_hangout = self.get_one_hangout(name)
         if existing_hangout:
             updated_data = hangout.dict(exclude_unset=True)
