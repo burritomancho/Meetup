@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Logged from "./Logged";
+import Calendar from "../assets/calendar1.jpg";
 
 export default function HangoutDetail() {
   const { hangoutName } = useParams();
@@ -28,7 +29,11 @@ export default function HangoutDetail() {
   }, [hangoutName]);
 
   if (!hangout) {
-    return <div>Hangout not found</div>;
+    return (
+      <div className="text-center pt-16 text-xl font-bold">
+        No existing Hangout
+      </div>
+    );
   }
 
   const capitalizeFirstLetter = (string) => {
@@ -36,46 +41,57 @@ export default function HangoutDetail() {
   };
 
   return (
-    <div className="w-full h-screen">
-      <div className="max-w-[860px] h-full mx-auto">
-        <h3 className="text-center pt-24">
+    <div
+      className="bg-center bg-no-repeat bg-cover w-full min-h-screen"
+      style={{
+        backgroundImage: `url(${Calendar})`,
+        backgroundPositionX: "20%",
+      }}
+    >
+      <div className="max-w-[860px] h-full mx-auto pl-12 transition-all pb-16">
+        <h3 className="text-center pt-28 text-gray-50 lg:text-6xl md:text-5xl sm:text-4xl text-4xl">
           {capitalizeFirstLetter(hangout.name)}
         </h3>
-        <div className="grid grid-cols-2 gap-6 mt-10">
-          <div className="rounded-md border-black border col-span-2 md:col-span-1 h-64 pt-4">
-            <ul className="pl-4 font-bold">
-              Selected Dates:{" "}
-              <li className="pt-2 font-normal">
-                {capitalizeFirstLetter(hangout.dates.join(", "))}
-              </li>
-            </ul>
-          </div>
-          <div className="rounded-md border-black border col-span-2 md:col-span-1 pl-4 pt-4 font-bold">
-            Attendees:
-            <ul className="pt-2 font-normal">
-              {hangout.friends.map((friend) => (
-                <li key={friend.username} className="flex justify-start">
-                  <p>{capitalizeFirstLetter(friend.username)}</p>
-                </li>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4 mt-12">
+          <div className="lg:w-[100%] md:w-[90%] sm:w-[85%] w-[70%] mx-auto rounded-md h-96 py-4 bg-[#feffcc] text-lg">
+            <div className="pl-4 font-bold">
+              Selected Dates:
+              {hangout.dates.map((date) => (
+                <div key={date}>
+                  <li className="pt-2 font-normal text-base">{date}</li>
+                </div>
               ))}
-            </ul>
+            </div>
+          </div>
+          <div className="lg:w-[100%] md:w-[90%] sm:w-[85%] w-[70%] mx-auto rounded-md py-4 font-bold bg-[#feffcc] text-lg">
+            <div className="pl-4">
+              Attendees:
+              {hangout.friends.map((friend) => (
+                <div
+                  key={friend.username}
+                  className="pt-2 flex justify-start text-base font-normal"
+                >
+                  <li>{capitalizeFirstLetter(friend.username)}</li>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-        <div className="mx-auto my-5 border-black rounded-md border pl-4 h-20 pt-4 font-bold">
+        <div className="lg:w-[100%] md:w-[90%] sm:w-[85%] w-[70%] mx-auto my-5 rounded-md pl-4 h-[90px] pt-4 font-bold bg-[#feffcc] text-lg">
           Selected Location:
-          <p className="font-normal">
+          <p className="pt-2 font-normal text-base">
             {capitalizeFirstLetter(hangout.location)}
           </p>
         </div>
-        <div className="mx-auto border-black border rounded-md pl-4 h-20 pt-4 font-bold">
+        <div className="lg:w-[100%] md:w-[90%] sm:w-[85%] w-[70%] mx-auto rounded-md pl-4 h-[90px] pt-4 font-bold bg-[#feffcc] text-lg">
           Hangout notes:{" "}
-          <p className="font-normal">
+          <p className="pt-2 font-normal text-base">
             {capitalizeFirstLetter(hangout.description)}
           </p>
         </div>
-        <div className="mx-auto my-5 border-black rounded-md border pl-4 h-20 pt-4 font-bold">
+        <div className="lg:w-[100%] md:w-[90%] sm:w-[85%] w-[70%] mx-auto my-5 rounded-md pl-4 h-[90px] pt-4 font-bold bg-[#feffcc] text-lg">
           Finalized Date:{" "}
-          <p className="font-normal">
+          <p className="pt-2 font-normal text-base">
             {capitalizeFirstLetter(hangout.finalized_date)}
           </p>
         </div>
