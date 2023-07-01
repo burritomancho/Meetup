@@ -20,26 +20,22 @@ export default function HangoutList() {
       setUser(data.account);
     }
   };
-
   useEffect(() => {
     fetchUser();
   }, []);
 
   const fetchHangouts = async () => {
-    const url = `${process.env.REACT_APP_USER_SERVICE_API_HOST}/hangouts`;
+    const url = `${process.env.REACT_APP_USER_SERVICE_API_HOST}/users/${user.username}/hangouts`;
     const response = await fetch(url, {
       method: "GET",
       credentials: "include",
     });
     if (response.ok) {
       const data = await response.json();
-      const filteredHangouts = data.filter((hangout) =>
-        hangout.friends.some((friend) => friend.username === user.username)
-      );
-      setHangouts(filteredHangouts);
+      console.log(data);
+      setHangouts(data);
     }
   };
-
   useEffect(() => {
     fetchHangouts();
   }, []);
@@ -59,7 +55,6 @@ export default function HangoutList() {
       Swal.fire("No hangouts selected!", "", "info");
       return;
     }
-
     Swal.fire({
       title: "Confirm delete?",
       icon: "warning",
@@ -141,7 +136,7 @@ export default function HangoutList() {
                 />
                 <Link
                   to={`/hangouts/${hangout.name}`}
-                  className="transitions-all lg:w-[500px] md:w-[400px] sm:w-[350px] w-[280px] font-semibold hover:scale-105 duration-200 p-4 bg hover:bg-gray-50"
+                  className="transitions-all lg:w-[500px] md:w-[400px] sm:w-[350px] w-[280px] font-semibold hover:scale-105 duration-200 p-4 bg-[#556E53] hover:bg-[#435842]"
                 >
                   <span className="text-center justify-center items-end">
                     <p className="font-bold lg:text-2xl md:text-xl sm:text-lg text-base">
@@ -157,7 +152,7 @@ export default function HangoutList() {
             {selectedHangouts.length > 0 && (
               <button
                 onClick={deleteSelectedHangouts}
-                className="bg-red-500 text-white font-bold py-2 px-4 mt-4 rounded ml-8"
+                className="bg-gray-900 text-gray-50 font-bold py-2 px-4 mt-4 rounded ml-8"
               >
                 Delete Selected
               </button>

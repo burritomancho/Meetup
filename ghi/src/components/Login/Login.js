@@ -39,8 +39,8 @@ export default function Login() {
 
   return (
     <>
-      <div className="h-[100%] grid grid-cols-1 sm:grid-cols-2 rounded-md p-[1px] mx-auto">
-        <div className="m-5 max-w-[250px] ml-[130px]">
+      <div className="h-[100%] grid grid-cols-1 sm:grid-cols-2 justify-center items-center p-[1px]">
+        <div className="m-5 max-w-[250px] ml-[130px] mt-[-135px]">
           <h1 className="text-xl font-bold pb-[160px] ml-[-100px] flex">
             Meet<span className="text-black">Up</span>
             <BiCopyright size={15} className="my-auto mx-1" />
