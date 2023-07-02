@@ -1,7 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends
-from queries.yelp import (
-    YelpCalls
-)
+from queries.yelp import YelpCalls
 # from authenticator import authenticator
 
 router = APIRouter()
@@ -14,5 +12,3 @@ async def get_yelp_locations(
 ):
     yelp = repo.get_location_list(city, term)
     return yelp
-    print(e)
-    raise HTTPException(status_code=500, detail="Unexpected error")
