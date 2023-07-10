@@ -130,7 +130,7 @@ const HangoutPlan = () => {
 				<div className="relative">
 					<img src={Plan} alt="Plan a Hangout" className="h-72 w-full object-cover rounded-xl" />
 					<div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center w-full">
-						<h1 className="text-white text-5xl font-semibold" style={{ WebkitTextStroke: '1px black', textStroke: '1px black' }}>Plan a Hangout</h1>
+						<h1 className="text-white text-8xl font-semibold" style={{ WebkitTextStroke: '1px black', textStroke: '1px black' }}>Plan a Hangout</h1>
 						<div className="mt-8 flex justify-center">
 						<label className="block mt-2 mr-6 text-2xl text-center text-white text-primary-dark dark:text-primary-light">Hangout Name</label>
 						<input
@@ -145,12 +145,7 @@ const HangoutPlan = () => {
 						</div>
 					</div>
 				</div>
-				{/* {isSuccess && (
-					<div className="bg-green-200 text-green-700 py-2 px-4 rounded mb-4">
-						Hangout planned successfully!
-					</div>
-				)} */}
-				<div className="h-screen mt-10 grid grid-cols-3 gap-8">
+				<div className="h-screen mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 					<div className="mb-4 h-full bg-cover bg-center rounded-xl p-4 transform transition-all duration-200 hover:scale-105"  style={{ backgroundImage: `url(${FriendsImage})` }}>
 						<label className="mt-8 block mb-2 text-2xl text-center text-primary-dark dark:text-primary-light" style={{ textShadow: '2px 2px 4px rgba(255, 255, 0, 10.0)' }} htmlFor="friends">
 							Add Friends

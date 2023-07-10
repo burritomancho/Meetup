@@ -42,7 +42,7 @@ function Logged() {
       >
         <div className="grid grid-cols-1 h-full">
           <div className="drop-shadow-2xl">
-            <Link to="/">
+            <Link to="/list">
               <div className="cursor-pointer">
                 <img
                   src={logo}
@@ -66,7 +66,7 @@ function Logged() {
                   />
                 </li>
               </Link>
-              <Link to="/details">
+              <Link to="/list">
                 <li className="text-black border-b-[3px] border-t-2 border-[#646445] py-4 hover:bg-[#383825] transition duration-300">
                   <MdPendingActions
                     size={26}
@@ -128,9 +128,9 @@ function Logged() {
                     Profile
                   </li>
                 </Link>
-                <Link to="/calendar" onClick={handleSidebar}>
+                <Link to="/list" onClick={handleSidebar}>
                   <li className="px-3 py-2 pl-5 border-b-2 border-[#646445] text-lg font-semibold text-[#c8c888] hover:text-[#cbcb86] hover:bg-[#383825]">
-                    Calendar
+                    Hangouts
                   </li>
                 </Link>
                 <Link to="/invites" onClick={handleSidebar}>

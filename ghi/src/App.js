@@ -1,12 +1,12 @@
 import "./App.css";
 import Hero from "./components/Hero.jsx";
-import HangoutLists from "./components/HangoutLists.js"
 import UserProfile from "./components/Profile.js/UserProfile";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import HangoutPlan from "./components/HangoutPlan";
 import Details from "./components/Details";
-import SelectCalendar from "./components/SelectCalendar";
+import HangoutList from "./components/HangoutList";
+import HangoutDetail from "./components/HangoutDetail";
 
 function App() {
   const domain = /https:\/\/[^/]+/;
@@ -19,10 +19,10 @@ function App() {
           <Route path="/" element={<Hero />} />
           <Route path="/login" element={<Hero />} />
           <Route path="/register" element={<Hero />} />
+          <Route path="/list" element={<HangoutList />} />
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/plan_hangout" element={<HangoutPlan />} />
           <Route path="/details" element={<Details />} />
-          <Route path="/home" element={<HangoutLists />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

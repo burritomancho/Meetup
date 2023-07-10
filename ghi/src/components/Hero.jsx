@@ -90,7 +90,7 @@ const Hero = () => {
                     Organize your next hangout with tech
                   </h5>
                   <div className="flex justify-center">
-                    <Link to="register">
+                    <Link to="login">
                       <button className="py-2 px-4 my-3 bg-[#000] border-[#000] border-2 rounded-md shadow-xl font-semibold text-white text-lg hover:bg-[#4f5038] hover:border-[#4f5038] hover:ease-in transition duration-150">
                         Get Started
                       </button>
