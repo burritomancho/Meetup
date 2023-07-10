@@ -4,7 +4,6 @@ import Logged from "./Logged";
 import Swal from "sweetalert2";
 import Calendar from "../assets/coffee.jpg";
 
-
 export default function HangoutList() {
   const [user, setUser] = useState("");
   const [hangouts, setHangouts] = useState([]);

@@ -22,7 +22,7 @@ function App() {
           <Route path="/list" element={<HangoutList />} />
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/plan_hangout" element={<HangoutPlan />} />
-          <Route path="/details" element={<Details />} />
+          <Route path="/details" element={<HangoutDetail />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
