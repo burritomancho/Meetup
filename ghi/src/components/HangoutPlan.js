@@ -124,6 +124,7 @@ const HangoutPlan = () => {
 	const [isSuccess, setIsSuccess] = useState(false);
 
 	return (
+		<>
 		<div className="w-full min-h-screen bg-cover bg-no-repeat bg-center" style={{ backgroundImage: `url(${HangoutPlanImage})` }}>
 			<div className="leading-loose">
 			<form className="w-3/4 mx-auto p-6 bg-white dark:bg-secondary-dark rounded-xl text-left" style={{ backgroundColor: 'transparent' }} onSubmit={handleSubmit}>
@@ -328,6 +329,8 @@ const HangoutPlan = () => {
 				</form>
 			</div>
 		</div>
+		<Logged />
+		</>
 	);
 };
 
