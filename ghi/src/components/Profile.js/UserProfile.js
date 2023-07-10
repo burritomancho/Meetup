@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import Logged from "../Logged";
+import Profile from "../../assets/profile3.png";
 
 export default function UserProfile() {
   const [user, setUser] = useState("");
+  const [hangouts, setHangouts] = useState([]);
 
   const fetchUser = async () => {
     const url = `${process.env.REACT_APP_USER_SERVICE_API_HOST}/token`;
@@ -13,36 +15,65 @@ export default function UserProfile() {
     if (response.ok) {
       const data = await response.json();
       setUser(data.account);
-      console.log(user);
     }
   };
+
   useEffect(() => {
     fetchUser();
-  });
+  }, []);
+
+  const fetchHangouts = async () => {
+    const url = `${process.env.REACT_APP_USER_SERVICE_API_HOST}/users/${user.username}/hangouts`;
+    const response = await fetch(url, {
+      method: "GET",
+      credentials: "include",
+    });
+    if (response.ok) {
+      const data = await response.json();
+      setHangouts(data);
+    }
+  };
+
+  useEffect(() => {
+    fetchHangouts();
+  }, []);
+
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
 
   return (
     <>
-      <div className="h-[100%] mx-auto">
-        <div className="main-cover w-full">
-          <div className="top-cover bg-green-400 py-36"></div>
-          <div className="profile-container flex items-center">
-            <div className="profile-circle bg-gray-200 absolute left-1/4 top-1/3 transform lg:-translate-x-[90%] md:-translate-x-1/2 sm:-translate-x-1/5 -translate-x-1/6 -translate-y-1/2 lg:w-64 lg:h-64 md:w-56 md:h-56 sm:w-52 sm:h-52 w-44 h-44 rounded-full transition-all overflow-hidden"></div>
-            <div className="bottom-cover py-24 text-bold text-2xl lg:-translate-x-[-520px] translate-y-[-60px] md:-translate-x-[-380px] sm:-translate-x-[-300px] -translate-x-[-300px] transition-transform">
-              {user.username}
+      <div className="bg-gray-900 w-full lg:px-20 md:px-20 sm:px-16 px-12 min-h-screen">
+        <div className="font-semibold">
+          <div className="w-full flex items-center justify-center pt-32 pl-14">
+            <div className="rounded-full bg-gray-50">
+              <img
+                className="lg:h-52 lg:w-52 md:h-44 md:w-44 sm:h-40 sm:w-40 w-32 h-32 overflow-hidden"
+                src={Profile}
+                alt=""
+              />
             </div>
-            <div className="ml-auto mr-6 mt-[-130px]">
-              <button className="font-bold bg-gray-400 rounded-xl p-2 duration-300 hover:bg-gray-500 hover:scale-105">
-                Edit Profile
-              </button>
+          </div>
+          <div className="text-gray-50 font-bold text-4xl text-center pt-3 pb-16 pl-12">
+            {user.username}
+          </div>
+          <div className="grid grid-cols-12 min-h-screen pl-16 lg:pb-40 md:pb-44 sm:pb-60 pb-72 transition-all">
+            <div className="col-span-4 bg-[#D1D4C9] py-16 text-center">
+              <p className="text-xl pb-4">Info or Friends:</p>
+            </div>
+            <div className="text-gray-50 col-span-8 bg-[#29435C] pl-10 py-16">
+              <p className="text-xl pb-4">Active hangouts:</p>
+              {hangouts.map((hangout) => (
+                <div key={hangout.name}>
+                  <li>{hangout.name}</li>
+                </div>
+              ))}
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-12 min-h-screen">
-          <div className="col-span-4 bg-gray-500 pt-16 text-center">grid 1</div>
-          <div className="col-span-8 bg-gray-800 pl-10 pt-16">grid 2</div>
-        </div>
-        <Logged />
       </div>
+      <Logged />
     </>
   );
 }
