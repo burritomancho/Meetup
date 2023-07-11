@@ -32,7 +32,6 @@ export default function HangoutList() {
     });
     if (response.ok) {
       const data = await response.json();
-      console.log(data);
       setHangouts(data);
     }
   };
