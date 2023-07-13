@@ -3,9 +3,11 @@ import { useState, useEffect } from "react";
 import Logged from "./Logged";
 import Swal from "sweetalert2";
 import Calendar from "../assets/coffee.jpg";
+import useToken from "@galvanize-inc/jwtdown-for-react";
 
 
 export default function HangoutList() {
+  const token = useToken();
   const [user, setUser] = useState("");
   const [hangouts, setHangouts] = useState([]);
   const [selectedHangouts, setSelectedHangouts] = useState([]);
