@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Logged from "./Logged";
-import Calendar from "../assets/calendar1.jpg";
+import Calendar from "../assets/hangouts/calendar1.jpg";
 
 export default function HangoutDetail() {
   const { hangoutName } = useParams();
