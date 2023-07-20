@@ -34,9 +34,11 @@ const HangoutPlan = () => {
   const yelpUrl = `${process.env.REACT_APP_USER_SERVICE_API_HOST}/api/yelp_locations?city=${encodeURIComponent(userLocation)}&term=${encodeURIComponent(term)}`
   const friendCheckURL = `${process.env.REACT_APP_USER_SERVICE_API_HOST}/users/${friendUsername}`;
 
-  if (!token) {
+  useEffect(() => {
+    if (!token) {
     navigate("/login")
   }
+  })
 
   const handleAddFriend = async () => {
 	if (friendUsername && friends.length < 5) {
@@ -326,7 +328,7 @@ const HangoutPlan = () => {
 						<button className="w-full px-4 py-2 mt-4 text-lg text-white bg-indigo-500 hover:bg-indigo-600 rounded-lg" type="submit">Create</button>
 					</div>
 				</div>
-				</form>
+			</form>
 			</div>
 		</div>
 		<Logged />

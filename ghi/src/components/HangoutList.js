@@ -163,7 +163,7 @@ export default function HangoutList() {
           </div>
         </div>
       </div>
-      <Logged />
+      <Logged/>
     </>
   );
 }

@@ -14,8 +14,6 @@ user_repo = UserRepo()
 
 
 
-
-
 class Friend(BaseModel):
     username: str
     selected_date: str
