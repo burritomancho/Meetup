@@ -3,8 +3,7 @@ import { useState, useEffect } from "react";
 import Logged from "./Logged";
 import Swal from "sweetalert2";
 import Calendar from "../assets/coffee.jpg";
-import useToken from "@galvanize-inc/jwtdown-for-react";
-
+import { RiDeleteBin5Line } from "react-icons/ri";
 
 export default function HangoutList() {
   const token = useToken();
@@ -35,7 +34,6 @@ export default function HangoutList() {
     });
     if (response.ok) {
       const data = await response.json();
-      console.log(data);
       setHangouts(data);
     }
   };
@@ -113,7 +111,7 @@ export default function HangoutList() {
   return (
     <>
       <div
-        className="bg-center bg-no-repeat bg-cover w-full h-screen pt-32 pl-14"
+        className="bg-center bg-no-repeat bg-cover w-full min-h-screen py-32 pl-14"
         style={{
           backgroundImage: `url(${Calendar})`,
           backgroundPositionX: "20%",
@@ -155,9 +153,9 @@ export default function HangoutList() {
             {selectedHangouts.length > 0 && (
               <button
                 onClick={deleteSelectedHangouts}
-                className="bg-gray-900 text-gray-50 font-bold py-2 px-4 mt-4 rounded ml-8"
+                className="bg-gray-800 text-[#5fca81] font-bold py-2 px-4 mt-4 rounded ml-8 flex justify-center items-center"
               >
-                Delete Selected
+                <RiDeleteBin5Line /> <p className="text-gray-50 ml-1">Delete</p>
               </button>
             )}
           </div>
