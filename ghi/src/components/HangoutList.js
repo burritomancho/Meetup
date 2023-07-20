@@ -4,6 +4,7 @@ import Logged from "./Logged";
 import Swal from "sweetalert2";
 import Calendar from "../assets/coffee.jpg";
 import { RiDeleteBin5Line } from "react-icons/ri";
+import useToken from "@galvanize-inc/jwtdown-for-react";
 
 export default function HangoutList() {
   const token = useToken();

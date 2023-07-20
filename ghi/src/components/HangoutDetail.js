@@ -113,16 +113,16 @@ export default function HangoutDetail() {
   return (
     <>
     <div
-      className="w-full min-h-screen lg:pl-[220px] md:pl-[220px] sm:pl-[220px] pr-[5%] relative flex flex-col items-center justify-center"
+      className="min-h-screen items-center justify-center"
       // style={{
       //   backgroundImage: `url(${Calendar})`,
       //   backgroundPositionX: "20%",
       // }}
     >
       <div>
-        <img className="absolute inset-0 z-0 w-full h-[25vh] lg:h-[35vh] md:h-[30vh] object-cover" src={detailbackground} />
+        <img className="absolute inset-0 w-full h-[25vh] lg:h-[35vh] md:h-[30vh] object-cover" src={detailbackground} />
       </div>
-      <div className="h-full w-full w-[1/2] pb-[5%] transition-all relative z-10">
+      <div className="h-full w-full w-[1/2] pb-[5%] transition-all relative">
         {showConfirmation && (
           <div className="confirmation-modal bg-white p-6 rounded-lg">
             <div className="confirmation-content justify-center">
@@ -132,7 +132,7 @@ export default function HangoutDetail() {
             </div>
           </div>
         )}
-        <div className="flex flex-wrap justify-center mt-[15%] ">
+        <div className="flex flex-wrap justify-center mt-[15%]">
           <div className="lg:w-[30%] lg:rounded-r-none lg:ml-0 md:w-[700px] md:rounded-l-2xl md:ml-[10%] sm:w-[500px] rounded-r-2xl rounded-l-2xl sm:rounded-l-2xl ml-[10%] lg:rounded-l-2xl w-[300px] h-96 py-4 bg-white shadow-2xl p-12">
             <h3 className="pt-2 pb-4">{hangout.name}</h3>
             <div className="border-t border-gray-400"></div>
