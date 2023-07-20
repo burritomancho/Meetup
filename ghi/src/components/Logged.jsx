@@ -53,12 +53,12 @@ function Logged() {
             </Link>
             <ul>
               <Link to="/profile">
-                <li className="text-black border-b-[1px] border-t-[3px] border-[#646445] py-4 hover:bg-[#383825] transition duration-300">
+                <li title="Profile" className="text-black border-b-[1px] border-t-[3px] border-[#646445] py-4 hover:bg-[#383825] transition duration-300">
                   <CgProfile size={26} color="#c8c888" className="mx-auto" />
                 </li>
               </Link>
               <Link to="/plan_hangout">
-                <li className="text-black border-b-[1px] border-t-2 border-[#646445] py-4 hover:bg-[#383825] transition duration-300">
+                <li title="Plan hangout" className="text-black border-b-[1px] border-t-2 border-[#646445] py-4 hover:bg-[#383825] transition duration-300">
                   <AiOutlineCalendar
                     size={26}
                     color="#c8c888"
@@ -67,7 +67,7 @@ function Logged() {
                 </li>
               </Link>
               <Link to="/list">
-                <li className="text-black border-b-[3px] border-t-2 border-[#646445] py-4 hover:bg-[#383825] transition duration-300">
+                <li title="List of hangouts" className="text-black border-b-[3px] border-t-2 border-[#646445] py-4 hover:bg-[#383825] transition duration-300">
                   <MdPendingActions
                     size={26}
                     color="#c8c888"
