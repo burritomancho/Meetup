@@ -25,7 +25,6 @@ export default function Login() {
     event.preventDefault();
     try {
       await login(username, password);
-      navigate("/list")
     } catch (error) {
       console.log(error);
     }
@@ -40,7 +39,7 @@ export default function Login() {
   return (
     <>
       <div className="h-[100%] grid grid-cols-1 sm:grid-cols-2 justify-center items-center p-[1px]">
-        <div className="m-5 max-w-[250px] ml-[130px] mt-[-135px]">
+        <div className="m-5 max-w-[250px] lg:ml-[130px] md:ml-[100px] sm:ml-[80px] mx-20 mt-[-135px]">
           <h1 className="text-xl font-bold pb-[160px] ml-[-100px] flex">
             Meet<span className="text-black">Up</span>
             <BiCopyright size={15} className="my-auto mx-1" />

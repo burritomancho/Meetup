@@ -22,7 +22,7 @@ const Hero = () => {
     if (token) {
       navigate("/");
     }
-  }, [token]);
+  }, []);
 
   useEffect(() => {
     if (location.pathname === "/login") {
@@ -47,7 +47,7 @@ const Hero = () => {
         setShow(true);
       }, 375);
     }
-  }, [location, show]);
+  }, [location]);
 
   return (
     <>
