@@ -73,10 +73,15 @@ class HangoutRepo:
 
     def get_current_user_hangouts(self, username: str) -> List[HangoutOut]:
         try:
-            hangouts = collection.find({"friends.username": username})
+            hangouts = collection.find({
+            "$or": [
+                {"friends.username": username},
+                {"host": username}
+            ]
+            })
             return [HangoutOut(**hangout) for hangout in hangouts]
-        except Exception:
-            raise Exception("There was an error getting your hangouts")
+        except Exception as e:
+            raise Exception("There was an error getting your hangouts" + str(e))
 
     def create_hangout(self, hangout: HangoutIn) -> HangoutOut:
         inserted_hangout = hangout.dict()

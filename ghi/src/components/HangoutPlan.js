@@ -10,6 +10,7 @@ import Logged from "./Logged";
 
 const HangoutPlan = () => {
   const { token } = useToken();
+  const [user, setUser] = useState('')
   const [name, setName] = useState('');
   const [term, setTerm] = useState('');
   const [userLocation, setUserLocation] = useState('');
@@ -39,6 +40,21 @@ const HangoutPlan = () => {
     navigate("/login")
   }
   })
+
+  const fetchUser = async () => {
+    const url = `${process.env.REACT_APP_USER_SERVICE_API_HOST}/token`;
+    const response = await fetch(url, {
+      method: "GET",
+      credentials: "include",
+    });
+    if (response.ok) {
+      const data = await response.json();
+      setUser(data.account.username);
+    }
+  };
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   const handleAddFriend = async () => {
 	if (friendUsername && friends.length < 5) {
@@ -105,6 +121,7 @@ const HangoutPlan = () => {
 	data.dates = dates;
 	data.finalized_date = "2023-06-30";
 	data.name = name;
+	data.host = user;
 	data.description = description;
 
     const createHangoutURL = `${process.env.REACT_APP_USER_SERVICE_API_HOST}/hangouts`;
@@ -120,7 +137,7 @@ const HangoutPlan = () => {
     const response = await fetch(createHangoutURL, fetchConfig);
 
     if (response.ok) {
-      navigate("/login")
+      navigate("/list")
     }
   };
 	const [isSuccess, setIsSuccess] = useState(false);

@@ -30,6 +30,9 @@ export default function Register() {
     data.username = username;
     data.email = email;
     data.password = password;
+    data.hangouts = {};
+    data.friends = [];
+    data.picture = null;
     const userUrl = `${process.env.REACT_APP_USER_SERVICE_API_HOST}/users`;
     const fetchConfig = {
       method: "POST",
