@@ -25,6 +25,7 @@ class HangoutIn(BaseModel):
     dates: List[date]
     finalized_date: date
     name: str
+    host: str
     description: str
 
 
@@ -34,6 +35,7 @@ class HangoutOut(BaseModel):
     dates: List[str]
     finalized_date: str
     name: str
+    host: str
     description: str
 
 
@@ -44,6 +46,7 @@ class UpdateHangoutModel(BaseModel):
     dates: Optional[List[date]]
     finalized_date: Optional[date]
     name: Optional[str]
+    host: Optional[str]
     description: Optional[str]
 
 

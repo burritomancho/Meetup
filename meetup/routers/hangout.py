@@ -23,6 +23,7 @@ class UpdateHangoutModel(BaseModel):
     dates: Optional[List[date]]
     finalized_date: Optional[date]
     name: Optional[str]
+    host: Optional[str]
     description: Optional[str]
 
 

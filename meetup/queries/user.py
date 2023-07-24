@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 from pydantic import BaseModel
 from queries.pool import conn
-from typing import Optional, Dict
+from typing import Optional, Dict, List
 from pymongo.errors import DuplicateKeyError
 from pymongo.cursor import Cursor
 
@@ -15,6 +15,7 @@ class UserIn(BaseModel):
     email: str
     password: str
     hangouts: Optional[Dict[str, bool]]
+    friends: List[str]
 
 
 class UserOut(BaseModel):
@@ -22,6 +23,7 @@ class UserOut(BaseModel):
     username: str
     email: str
     hangouts: Optional[Dict[str, bool]]
+    friends: List[str]
 
 
 class UpdateUserModel(BaseModel):
@@ -29,6 +31,7 @@ class UpdateUserModel(BaseModel):
     email: Optional[str]
     password: Optional[str]
     hangouts: Optional[Dict[str, bool]]
+    friends: List[str]
 
 
 class DuplicateUserError(Exception):

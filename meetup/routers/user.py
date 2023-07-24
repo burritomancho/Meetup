@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends, Request, Response
 from queries.user import UserIn, UserOut, UserRepo, DuplicateUserError
 from pydantic import BaseModel
-from typing import Optional, List
+from typing import Optional, List, Dict
 from jwtdown_fastapi.authentication import Token
 from authenticator import authenticator
 
@@ -22,6 +22,8 @@ class UpdateUserModel(BaseModel):
     username: Optional[str]
     email: Optional[str]
     password: Optional[str]
+    hangouts: Optional[Dict[str, bool]]
+    friends: Optional[List[str]]
 
 
 @router.get("/protected", response_model=bool)
