@@ -146,27 +146,12 @@ export default function UserProfile() {
           >
             <div>
               <div className="flex items-center justify-center">
-                <div className="relative rounded-full bg-gray-50">
+                <div className="relative rounded-full bg-gray-50 overflow-hidden">
                   <img
                     className="lg:h-52 lg:w-52 md:h-44 md:w-44 sm:h-40 sm:w-40 w-32 h-32 object-cover"
                     src={updatedProfileImage}
                     alt=""
                   />
-                  {showUploadButton ? (
-                    <button
-                      className="absolute bottom-[-6px] right-[-18px] text-white"
-                      onClick={handleUploadImage}
-                    >
-                      Upload
-                    </button>
-                  ) : (
-                    <label
-                      htmlFor="profileImageInput"
-                      className="absolute bottom-0 right-0 cursor-pointer"
-                    >
-                      <FaCamera className="text-gray-50" />
-                    </label>
-                  )}
                   <input
                     id="profileImageInput"
                     type="file"
@@ -175,6 +160,20 @@ export default function UserProfile() {
                     onChange={handleProfileImageChange}
                   />
                 </div>
+              </div>
+              <div className="flex items-center justify-center mt-2">
+                {showUploadButton ? (
+                  <button
+                    className="text-white"
+                    onClick={handleUploadImage}
+                  >
+                    Upload
+                  </button>
+                ) : (
+                  <label htmlFor="profileImageInput" className="cursor-pointer">
+                    <FaCamera className="text-gray-50" />
+                  </label>
+                )}
               </div>
               <div className="text-gray-50 font-bold lg:text-4xl md:text-3xl sm:text-2xl text-xl text-center pt-3 pb-16">
                 {capitalizeFirstLetter(user.username)}
@@ -187,13 +186,13 @@ export default function UserProfile() {
                 User Info:
               </div>
               <div className="lg:text-lg md:text-lg sm:text-md text-md">
-                <div className="pt-4 flex overflow-hidden overflow-y-auto">
+                <div className="pt-4 grid sm:grid-cols-3 grid-cols-1">
                   Email:
-                  <div className="font-normal pl-2 whitespace-nowrap overflow-hidden">
+                  <div className="font-normal whitespace-nowrap">
                     {capitalizeFirstLetter(user.email)}
                   </div>
                 </div>
-                <div className="mt-16">
+                <div className="mt-16 grid sm:grid-cols-3 grid-cols-1">
                   Friends:
                   <div className="font-normal pt-1">{hangouts.friends}</div>
                 </div>
