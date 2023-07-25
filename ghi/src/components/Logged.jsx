@@ -8,6 +8,7 @@ import { BiLogOutCircle } from "react-icons/bi";
 import useToken from "@galvanize-inc/jwtdown-for-react";
 import { AiOutlineCalendar } from "react-icons/ai";
 import { MdPendingActions, MdOutlinePending } from "react-icons/md";
+import Swal from "sweetalert2";
 
 function Logged() {
   const [show, setShow] = useState(true);
@@ -31,6 +32,16 @@ function Logged() {
     navigate("/");
   };
 
+  const showPopup = () => {
+    Swal.fire({
+      text: "If you have any questions regarding our application or find any errors please contact us at notification.meetup@gmail.com.",
+      icon: "info",
+      confirmButtonText: "OK",
+    });
+  };
+
+
+
   return (
     <div>
       <div
@@ -53,12 +64,18 @@ function Logged() {
             </Link>
             <ul>
               <Link to="/profile">
-                <li title="Profile" className="text-black border-b-[1px] border-t-[3px] border-[#646445] py-4 hover:bg-[#383825] transition duration-300">
+                <li
+                  title="Profile"
+                  className="text-black border-b-[1px] border-t-[3px] border-[#646445] py-4 hover:bg-[#383825] transition duration-300"
+                >
                   <CgProfile size={26} color="#c8c888" className="mx-auto" />
                 </li>
               </Link>
               <Link to="/plan_hangout">
-                <li title="Plan hangout" className="text-black border-b-[1px] border-t-2 border-[#646445] py-4 hover:bg-[#383825] transition duration-300">
+                <li
+                  title="Plan hangout"
+                  className="text-black border-b-[1px] border-t-2 border-[#646445] py-4 hover:bg-[#383825] transition duration-300"
+                >
                   <AiOutlineCalendar
                     size={26}
                     color="#c8c888"
@@ -67,7 +84,10 @@ function Logged() {
                 </li>
               </Link>
               <Link to="/list">
-                <li title="List of hangouts" className="text-black border-b-[3px] border-t-2 border-[#646445] py-4 hover:bg-[#383825] transition duration-300">
+                <li
+                  title="List of hangouts"
+                  className="text-black border-b-[3px] border-t-2 border-[#646445] py-4 hover:bg-[#383825] transition duration-300"
+                >
                   <MdPendingActions
                     size={26}
                     color="#c8c888"
@@ -89,7 +109,7 @@ function Logged() {
             </ul>
           </div>
           <div className="mx-auto flex items-end mb-5">
-            <button>
+            <button onClick={showPopup}>
               <BsFillQuestionCircleFill
                 className="shadow-xl"
                 size={27}
