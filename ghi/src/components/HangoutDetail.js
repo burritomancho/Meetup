@@ -125,10 +125,12 @@ export default function HangoutDetail() {
       <div className="h-full w-full w-[1/2] pb-[5%] transition-all relative">
         {showConfirmation && (
           <div className="confirmation-modal bg-white p-6 rounded-lg">
-            <div className="confirmation-content justify-center">
+            <div className="confirmation-content mx-auto">
               <h3 style={{ textAlign: "center" }}>Thank you for selecting!</h3>
               <p className="mt-4" style={{ textAlign: "center" }}>Your preferred meetup date was updated successfully.</p>
-              <button className="pr-4 pl-4 pt-2 pb-2 rounded-lg" onClick={closeConfirmation} style={{ backgroundColor: "blue", color: "white" }}>Close</button>
+              <div className="flex justify-center pt-8">
+                <button className="pr-4 pl-4 pt-2 pb-2 rounded-lg" onClick={closeConfirmation} style={{ backgroundColor: "blue", color: "white" }} >Close</button>
+              </div>
             </div>
           </div>
         )}
@@ -169,6 +171,7 @@ export default function HangoutDetail() {
                     <button
                       onClick={() => handleDateSelection()}
                       className="ml-4 mt-4 px-4 py-2 text-lg text-white bg-gradient-to-br from-yellow-400 via-pink-500 to-red-500 hover:bg-indigo-600 rounded-lg"
+                      disabled={hangout.host === user.username}
                     >
                       <span>Confirm?</span>
                     </button>

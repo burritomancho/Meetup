@@ -15,7 +15,8 @@ class UserIn(BaseModel):
     email: str
     password: str
     hangouts: Optional[Dict[str, bool]]
-    friends: List[str]
+    friends: Optional[List[str]]
+    picture: Optional[str]
 
 
 class UserOut(BaseModel):
@@ -23,16 +24,16 @@ class UserOut(BaseModel):
     username: str
     email: str
     hangouts: Optional[Dict[str, bool]]
-    friends: List[str]
-
+    friends: Optional[List[str]]
+    picture: Optional[str]
 
 class UpdateUserModel(BaseModel):
     username: Optional[str]
     email: Optional[str]
     password: Optional[str]
     hangouts: Optional[Dict[str, bool]]
-    friends: List[str]
-
+    friends: Optional[List[str]]
+    picture: Optional[str]
 
 class DuplicateUserError(Exception):
     pass

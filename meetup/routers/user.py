@@ -23,7 +23,8 @@ class UpdateUserModel(BaseModel):
     email: Optional[str]
     password: Optional[str]
     hangouts: Optional[Dict[str, bool]]
-    friends: Optional[List[str]]
+    friends: List[str]
+    picture: Optional[str]
 
 
 @router.get("/protected", response_model=bool)
