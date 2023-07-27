@@ -7,6 +7,7 @@ import useToken from "@galvanize-inc/jwtdown-for-react";
 import locationpin from "../images/locationpin.png"
 import calendar from "../images/deadline.png"
 import friends from "../images/friendshangoutdetail.jpg"
+import { BsPencilSquare } from 'react-icons/bs'
 
 export default function HangoutDetail() {
   const [user, setUser] = useState('')
@@ -14,6 +15,9 @@ export default function HangoutDetail() {
   const [hangout, setHangout] = useState(null);
   const [selectDate, setSelectDate] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showDateForm, setShowDateForm] = useState('false')
+  const [finalDate, setFinalDate] = useState('');
+  const [preferredDate, setPreferredDate] = useState('');
   const {token} = useToken();
   const navigate = useNavigate();
   // const [isChecked, setisChecked] = useState(false);
@@ -64,7 +68,25 @@ export default function HangoutDetail() {
         name: hangoutName,
         body: JSON.stringify(updatedHangout),
       });
+  };
 
+  const handleFinalDateChange = (event) => setFinalDate(event.target.value);
+
+  const handleFinalDateSelection = async () => {
+    const url = `${process.env.REACT_APP_USER_SERVICE_API_HOST}/hangouts/${hangoutName}`;
+      const updatedHangout = {
+        ...hangout,
+        finalized_date: finalDate,
+      }
+      const response = await fetch(url, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json", // Add this line
+        },
+        name: hangoutName,
+        body: JSON.stringify(updatedHangout),
+      });
   };
 
   const closeConfirmation = (() => {
@@ -91,6 +113,32 @@ export default function HangoutDetail() {
     };
     fetchHangout();
   }, [hangoutName]);
+
+  useEffect(() => {
+    const fetchPreferredDate = async () => {
+      const selectedDatesCount = {};
+      let mostSelectedDate = 'bruh';
+      let highestOccurrence = 0;
+      const theHangout = hangout
+      hangout.friends.map((friend) => {
+        if (!selectedDatesCount[friend["selected_date"]]) {
+          selectedDatesCount[friend["selected_date"]] = 1
+        } else {
+          selectedDatesCount[friend["selected_date"]] ++
+        }
+      });
+
+      for (const date in selectedDatesCount) {
+        if (selectedDatesCount[date] > highestOccurrence) {
+          highestOccurrence = selectedDatesCount[date];
+          mostSelectedDate = date;
+        }
+      }
+      setPreferredDate(mostSelectedDate)
+    }
+    fetchPreferredDate()
+  }, [hangout])
+
 
   if (!hangout) {
     return (
@@ -147,7 +195,21 @@ export default function HangoutDetail() {
               <img className="pl-2" src={calendar} height={"40px"} width={"40px"}></img>
               <h5 className="pl-2 text-gray-400">Finalized Date</h5>
             </div>
+            <div className="flex flex-wrap">
             <h5 className="pt-2 pl-2 text-gray-500">{hangout.finalized_date}</h5>
+            {user.username === hangout.host && (
+              <div>
+              <button className="rounded-xl bg-blue p-4" onClick={() => setShowDateForm(true)}>
+                <BsPencilSquare />
+              </button>
+                {showDateForm === true && (
+                <form>
+                  <input className="border-2 border-black mr-4" id="finaldate" name="finaldate" type="date" placeholder="New date" value={finalDate} onChange={handleFinalDateChange} />
+                    <button className="p-2" style={{ backgroundColor: 'blue', borderRadius: '10px', color: 'white', transition: 'opacity 0.3s' }} onMouseEnter={(e) => e.target.style.opacity = 0.5} onMouseLeave={(e) => e.target.style.opacity = 1} onClick={() => handleFinalDateSelection(finalDate)}>Confirm?</button>
+                </form>)}
+              </div>
+            )}
+            </div>
           </div>
           <div className="max-h-full p-8 rounded-r-2xl lg:rounded-l-none lg:border-1 lg:border-dotted lg:border-gray-400 lg:border-2 bg-indigo-200 lg:w-[30%] lg:ml-[0%] md:w-[700px] md:rounded-l-2xl sm:w-[500px] w-[300px] sm:rounded-l-2xl rounded-l-2xl ml-[10%] py-4 font-bold bg-white text-lg shadow-2xl">
             <div>
@@ -155,29 +217,37 @@ export default function HangoutDetail() {
               <div className="text-gray-600 text-base mb-4">
                 Set your preferred date for the host to see:
               </div>
-              <div className="border-t border-gray-400 "></div>
-              {hangout.dates.map((date) => (
-                <div key={date} className="flex items-center">
-                  <input
-                    type="checkbox"
-                    className="checkbox mr-4 mt-4 h-4 w-4"
-                    checked={selectDate === date}
-                    onChange={() => setSelectDate(date)}
-                  />
-                  <span className={`text-lg ${selectDate === date ? 'text-indigo-500' : 'text-gray-600'} mt-4`}>
-                    {date}
-                  </span>
-                  {selectDate === date && (
-                    <button
-                      onClick={() => handleDateSelection()}
-                      className="ml-4 mt-4 px-4 py-2 text-lg text-white bg-gradient-to-br from-yellow-400 via-pink-500 to-red-500 hover:bg-indigo-600 rounded-lg"
-                      disabled={hangout.host === user.username}
-                    >
-                      <span>Confirm?</span>
-                    </button>
-                  )}
+              <div className="border-t border-gray-400 "/>
+              <div className="flex flex-wrap">
+                <div>
+                  {hangout.dates.map((date) => (
+                    <div key={date} className="flex items-center">
+                      <input
+                        type="checkbox"
+                        className="checkbox mr-4 mt-4 h-4 w-4"
+                        checked={selectDate === date}
+                        onChange={() => setSelectDate(date)}
+                      />
+                      <span className={`text-lg ${selectDate === date ? 'text-indigo-500' : 'text-gray-600'} mt-4`}>
+                        {date}
+                      </span>
+                      {selectDate === date && (
+                        <button
+                          onClick={() => handleDateSelection()}
+                          className="ml-4 mt-4 px-4 py-2 text-lg text-white bg-gradient-to-br from-yellow-400 via-pink-500 to-red-500 hover:bg-indigo-600 rounded-lg"
+                          disabled={hangout.host === user.username}
+                        >
+                          <span>Confirm?</span>
+                        </button>
+                      )}
+                    </div>
+                  ))}
                 </div>
-              ))}
+                <div className="mt-4 mx-auto">
+                  <div>Most preferred date:</div>
+                  <div className="rounded-xl border-2 border-blue text-center">{preferredDate}</div>
+                </div>
+            </div>
             </div>
           </div>
         </div>
