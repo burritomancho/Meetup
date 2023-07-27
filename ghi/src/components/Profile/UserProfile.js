@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Logged from "../Logged";
-import { FaPlus, FaCamera } from "react-icons/fa";
+import { FaCamera } from "react-icons/fa";
 import Profile from "../../assets/profile.png";
 import { Link } from "react-router-dom";
 import Cover from "../../assets/register.jpg";
@@ -42,7 +42,8 @@ export default function UserProfile() {
   const [hangoutImagesIndex, setHangoutImagesIndex] = useState([]);
   const [profileImage, setProfileImage] = useState(null);
   const [showUploadButton, setShowUploadButton] = useState(false);
-  const [updatedProfileImage, setUpdatedProfileImage] = useState(Profile);
+  const [setUpdatedProfileImage] = useState(Profile);
+  const [updatedProfileImageURL, setUpdatedProfileImageURL] = useState(Profile);
 
   const fetchUser = async () => {
     const url = `${process.env.REACT_APP_USER_SERVICE_API_HOST}/token`;
@@ -116,9 +117,8 @@ export default function UserProfile() {
       const url = `${process.env.REACT_APP_USER_SERVICE_API_HOST}/users/${user.username}`;
       const formData = new FormData();
       formData.append("picture", profileImage);
-
       fetch(url, {
-        method: "PATCH",
+        method: "PUT",
         credentials: "include",
         body: formData,
       })
@@ -126,6 +126,7 @@ export default function UserProfile() {
         .then((data) => {
           console.log("Profile image uploaded successfully", data);
           setShowUploadButton(false);
+          setUpdatedProfileImageURL(URL.createObjectURL(profileImage));
         })
         .catch((error) => {
           console.error("Error uploading profile image", error);
@@ -149,7 +150,7 @@ export default function UserProfile() {
                 <div className="relative rounded-full bg-gray-50 overflow-hidden">
                   <img
                     className="lg:h-52 lg:w-52 md:h-44 md:w-44 sm:h-40 sm:w-40 w-32 h-32 object-cover"
-                    src={updatedProfileImage}
+                    src={updatedProfileImageURL}
                     alt=""
                   />
                   <input
@@ -163,10 +164,7 @@ export default function UserProfile() {
               </div>
               <div className="flex items-center justify-center mt-2">
                 {showUploadButton ? (
-                  <button
-                    className="text-white"
-                    onClick={handleUploadImage}
-                  >
+                  <button className="text-white" onClick={handleUploadImage}>
                     Upload
                   </button>
                 ) : (
@@ -182,19 +180,29 @@ export default function UserProfile() {
           </div>
           <div className="grid grid-cols-12 min-h-screen lg:pb-40 md:pb-44 sm:pb-60 pb-72 transition-all">
             <div className="col-span-4 bg-[#D1D4C9] py-16 xl:pl-14 lg:pl-12 md:pl-10 sm:pl-6 pl-2 transition-all">
-              <div className="lg:text-2xl md:text-xl sm:text-lg text-md pb-8 mr-10 border-b-2 border-black">
+              <div className="lg:text-2xl md:text-xl sm:text-lg text-md pb-8 sm:mr-10 ml-1 mr-2 border-b-2 border-black">
                 User Info:
               </div>
               <div className="lg:text-lg md:text-lg sm:text-md text-md">
-                <div className="pt-4 grid sm:grid-cols-3 grid-cols-1">
+                <div className="pt-4 grid items-end sm:grid-cols-3 grid-cols-1">
                   Email:
-                  <div className="font-normal whitespace-nowrap">
+                  <div className="sm:text-base text-sm sm:ml-4 font-normal whitespace-nowrap">
                     {capitalizeFirstLetter(user.email)}
                   </div>
                 </div>
-                <div className="mt-16 grid sm:grid-cols-3 grid-cols-1">
+                <div className="mt-16">
                   Friends:
-                  <div className="font-normal pt-1">{hangouts.friends}</div>
+                  <div className="sm:mr-10 mr-2 mt-2 grid sm:grid-cols-2 grid-cols-1 gap-1">
+                    {user.friends &&
+                      user.friends.map((friend) => (
+                        <div
+                          key={friend}
+                          className="hover:bg-slate-200 py-2 px-3 sm:w-full text-center sm:text-base text-sm border-2 border-black capitalize font-normal whitespace-nowrap mb-2"
+                        >
+                          {friend}
+                        </div>
+                      ))}
+                  </div>{" "}
                 </div>
               </div>
             </div>

@@ -40,8 +40,6 @@ function Logged() {
     });
   };
 
-
-
   return (
     <div>
       <div
@@ -129,7 +127,7 @@ function Logged() {
             }`}
           >
             <div className="flex justify-between border-b-2 border-[#646445]">
-              <Link to="/" onClick={handleSidebar}>
+              <Link to="/list" onClick={handleSidebar}>
                 <h2 className="m-3 text-4xl">
                   Meet<span className="text-white">Up</span>
                 </h2>
