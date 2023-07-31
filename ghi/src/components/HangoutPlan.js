@@ -173,7 +173,7 @@ const HangoutPlan = () => {
 						<div className="mt-4 grid grid-cols-1 gap-4 flex">
 							<div className="flex justify-center">
 								<input
-									className="w-3/4 px-4 py-2 mr-2 border border-gray-300 dark:border-primary-dark border-opacity-50 text-primary-dark dark:text-secondary-light bg-ternary-light dark:bg-ternary-dark rounded-md shadow-sm"
+									className="w-3/4 px-4 py-2 mr-2 border border-gray-300 border-opacity-50 text-primary-dark bg-ternary-light rounded-md shadow-sm"
 									type="text"
 									id="friends"
 									name="friends"
@@ -199,7 +199,7 @@ const HangoutPlan = () => {
 								{friends.map((friend) => (
 									<div
 									  key={friend.username}
-									  className="flex items-center justify-between bg-gray-100 dark:bg-gray-800 p-2 mt-2 rounded"
+									  className="flex items-center justify-between bg-gray-100 p-2 mt-2 rounded"
 									>
 									<span className="pl-3">{friend.username}</span>
 										<button
@@ -216,11 +216,11 @@ const HangoutPlan = () => {
 					<div className="h-full bg-cover bg-center rounded-xl p-4 transform transition-all duration-200 hover:scale-105"  style={{ backgroundImage: `url(${NightlifeImage})` }}>
 						<div className="mb-4 grid grid-cols-2">
 							<div className="mr-2 mt-8">
-								<label className="block mb-2 text-white text-2xl text-primary-dark dark:text-primary-light" style={{ textShadow: '2px 2px 4px rgba(255, 255, 0, 10.0)' }} htmlFor="term">
+								<label className="block mb-2 text-white text-2xl text-primary-dark" style={{ textShadow: '2px 2px 4px rgba(255, 255, 0, 10.0)' }} htmlFor="term">
 									Looking for..
 								</label>
 								<input
-									className="mt-2 w-full px-4 py-2 border border-gray-300 dark:border-primary-dark border-opacity-50 text-primary-dark dark:text-secondary-light bg-ternary-light dark:bg-ternary-dark rounded-md shadow-sm"
+									className="mt-2 w-full px-4 py-2 border border-gray-300 border-opacity-50 text-primary-dark bg-ternary-light rounded-md shadow-sm"
 									type="text"
 									id="term"
 									name="term"
@@ -230,11 +230,11 @@ const HangoutPlan = () => {
 								/>
 							</div>
 							<div className="ml-2 mt-8">
-								<label className="block mb-2 text-white text-2xl text-primary-dark dark:text-primary-light" style={{ textShadow: '2px 2px 4px rgba(255, 255, 0, 10.0)' }} htmlFor="location">
+								<label className="block mb-2 text-white text-2xl text-primary-dark" style={{ textShadow: '2px 2px 4px rgba(255, 255, 0, 10.0)' }} htmlFor="location">
 									City
 								</label>
 								<input
-									className="mt-2 w-full px-4 py-2 border border-gray-300 dark:border-primary-dark border-opacity-50 text-primary-dark dark:text-secondary-light bg-ternary-light dark:bg-ternary-dark rounded-md shadow-sm"
+									className="mt-2 w-full px-4 py-2 border border-gray-300 border-opacity-50 text-primary-dark bg-ternary-light rounded-md shadow-sm"
 									type="text"
 									id="location"
 									name="location"
@@ -256,7 +256,7 @@ const HangoutPlan = () => {
 						</div>
 						{showOptions && (
 							<div className="mb-4 mt-4">
-								<label className="block mb-2 text-lg text-primary-dark dark:text-primary-light" htmlFor="location">
+								<label className="block mb-2 text-lg text-primary-dark" htmlFor="location">
 									Location Options
 								</label>
 								<div className="flex justify-center">

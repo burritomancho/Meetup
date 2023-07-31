@@ -254,8 +254,8 @@ export default function HangoutDetail() {
         <div className="flex flex-wrap w-full w-9/10 pl-[8%] pr-[8%]">
           <div className="min-h-[400px] lg:ml-[5%] md:ml-[5%] sm:ml-[5%] ml-[15%] lg:w-[50%] md:w-[400px] md:items-center sm:items-center sm:w-[200px] my-5 rounded-md pl-4 h-[90px] pt-4 mt-[8%]">
             <h3 className="text-gray-600">Event Notes:</h3>
-            <p className="pt-2 font-normal text-base">
-              {hangout.notes}
+            <p className="pt-2 mt-8 text-2xl">
+              {hangout.description}
             </p>
           </div>
           <div className="lg:w-[400px] md:w-[350px] sm:w-[300px] w-[200px] p-12 rounded-2xl shadow-2xl ml-auto mt-[5%] bg-white border-2 border-black">

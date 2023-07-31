@@ -151,11 +151,6 @@ function Logged() {
                     Hangouts
                   </li>
                 </Link>
-                <Link to="/invites" onClick={handleSidebar}>
-                  <li className="px-3 py-2 pl-5 border-b-2 border-[#646445] text-lg font-semibold text-[#c8c888] hover:text-[#cbcb86] hover:bg-[#383825]">
-                    Invites
-                  </li>
-                </Link>
                 <Link to="/" onClick={handleLogout}>
                   <li className="px-3 py-2 flex border-b-2 border-[#646445] text-lg font-semibold text-[#c8c888] hover:text-[#cbcb86] hover:bg-[#383825]">
                     <BiLogOutCircle size={20} className="my-auto m-1" />

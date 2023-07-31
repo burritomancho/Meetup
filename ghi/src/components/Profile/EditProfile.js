@@ -128,9 +128,9 @@ export default function EditProfile() {
                 htmlFor="username"
               >
                 Change Username&nbsp;
-                <span className="text-red-500 font-normal">*</span>
               </label>
               <input
+                required
                 className="border rounded w-full py-2 px-3"
                 onChange={handleUserNameChange}
                 type="text"
@@ -144,9 +144,9 @@ export default function EditProfile() {
                 htmlFor="email"
               >
                 Change Email Address&nbsp;
-                <span className="text-red-500 font-normal">*</span>
               </label>
               <input
+                required
                 className="border rounded w-full py-2 px-3"
                 onChange={handleEmailChange}
                 type="text"
