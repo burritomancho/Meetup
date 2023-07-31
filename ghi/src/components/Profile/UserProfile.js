@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import Logged from "../Logged";
-import { FaCamera } from "react-icons/fa";
-import Profile from "../../assets/profile.png";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Cover from "../../assets/register.jpg";
 
 const hangoutImages = [
@@ -37,13 +35,10 @@ const hangoutImages = [
 ];
 
 export default function UserProfile() {
+  const navigate = useNavigate();
   const [user, setUser] = useState("");
   const [hangouts, setHangouts] = useState([]);
   const [hangoutImagesIndex, setHangoutImagesIndex] = useState([]);
-  const [profileImage, setProfileImage] = useState(null);
-  const [showUploadButton, setShowUploadButton] = useState(false);
-  const [setUpdatedProfileImage] = useState(Profile);
-  const [updatedProfileImageURL, setUpdatedProfileImageURL] = useState(Profile);
 
   const fetchUser = async () => {
     const url = `${process.env.REACT_APP_USER_SERVICE_API_HOST}/token`;
@@ -105,34 +100,9 @@ export default function UserProfile() {
     });
   };
 
-  const handleProfileImageChange = (event) => {
-    const file = event.target.files[0];
-    setProfileImage(file);
-    setShowUploadButton(true);
-    setUpdatedProfileImage(URL.createObjectURL(file));
-  };
-
-  const handleUploadImage = () => {
-    if (profileImage) {
-      const url = `${process.env.REACT_APP_USER_SERVICE_API_HOST}/users/${user.username}`;
-      const formData = new FormData();
-      formData.append("picture", profileImage);
-      fetch(url, {
-        method: "PUT",
-        credentials: "include",
-        body: formData,
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("Profile image uploaded successfully", data);
-          setShowUploadButton(false);
-          setUpdatedProfileImageURL(URL.createObjectURL(profileImage));
-        })
-        .catch((error) => {
-          console.error("Error uploading profile image", error);
-        });
-    }
-  };
+  const handleEditProfile = () => {
+    navigate("/editprofile")
+  }
 
   return (
     <>
@@ -145,37 +115,25 @@ export default function UserProfile() {
               backgroundPositionY: "55%",
             }}
           >
-            <div>
-              <div className="flex items-center justify-center">
-                <div className="relative rounded-full bg-gray-50 overflow-hidden">
-                  <img
-                    className="lg:h-52 lg:w-52 md:h-44 md:w-44 sm:h-40 sm:w-40 w-32 h-32 object-cover"
-                    src={updatedProfileImageURL}
-                    alt=""
-                  />
-                  <input
-                    id="profileImageInput"
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={handleProfileImageChange}
-                  />
-                </div>
+            <div className="flex justify-end absolute top-[50px] lg:right-[100px] md:right-[95px] sm:right-[80px] right-[70px] transition-all">
+              <button
+                onClick={handleEditProfile}
+                className="mt-8 py-2 px-4 bg-[#575757] hover:bg-[#484848] text-white font-normal rounded-lg"
+              >
+                Edit
+              </button>
+            </div>
+            <div className="flex items-center justify-center">
+              <div className="relative rounded-full bg-gray-50 overflow-hidden">
+                <img
+                  className="lg:h-52 lg:w-52 md:h-44 md:w-44 sm:h-40 sm:w-40 w-32 h-32 object-cover"
+                  src={user.picture}
+                  alt=""
+                />
               </div>
-              <div className="flex items-center justify-center mt-2">
-                {showUploadButton ? (
-                  <button className="text-white" onClick={handleUploadImage}>
-                    Upload
-                  </button>
-                ) : (
-                  <label htmlFor="profileImageInput" className="cursor-pointer">
-                    <FaCamera className="text-gray-50" />
-                  </label>
-                )}
-              </div>
-              <div className="text-gray-50 font-bold lg:text-4xl md:text-3xl sm:text-2xl text-xl text-center pt-3 pb-16">
-                {capitalizeFirstLetter(user.username)}
-              </div>
+            </div>
+            <div className="text-gray-50 font-bold lg:text-4xl md:text-3xl sm:text-2xl text-xl text-center pt-3 pb-16">
+              {capitalizeFirstLetter(user.username)}
             </div>
           </div>
           <div className="grid grid-cols-12 min-h-screen lg:pb-40 md:pb-44 sm:pb-60 pb-72 transition-all">

@@ -8,6 +8,7 @@ import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import HangoutPlan from "./components/HangoutPlan";
 import HangoutList from "./components/HangoutList";
 import HangoutDetail from "./components/HangoutDetail";
+import EditProfile from "./components/Profile/EditProfile";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -36,6 +37,7 @@ function App() {
             <Route path="/register" element={<Hero />} />
             <Route path="/list" element={<HangoutList />} />
             <Route path="/profile" element={<UserProfile />} />
+            <Route path="/editprofile" element={<EditProfile />} />
             <Route path="/plan_hangout" element={<HangoutPlan />} />
             <Route path="/hangouts/:hangoutName" element={<HangoutDetail />} />
           </Routes>
