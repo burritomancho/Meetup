@@ -1,10 +1,13 @@
 {
-  "devDependencies": {
-    "tailwindcss": "^3.3.2"
+  "$schema": "https://railway.app/railway.schema.json",
+  "build": {
+    "builder": "NIXPACKS",
+    "workDir": "meetup/ghi",
+    "installCommand": "npm ci"
   },
-  "dependencies": {
-    "@mui/icons-material": "^5.14.0",
-    "http-proxy-middleware": "^2.0.6",
-    "react-router-dom": "^6.11.2"
+  "deploy": {
+    "numReplicas": 1,
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 10
   }
 }
