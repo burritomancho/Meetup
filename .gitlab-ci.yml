@@ -1,17 +1,17 @@
-stages:
-  - test
-  - build
-  - deploy
+# stages:
+#   - test
+#   - build
+#   - deploy
 
-# Run flake8 to check for code quality
-lint-test-job:
-  image: python:3-bullseye
-  stage: test
-  script:
-    - pip install flake8
-    - flake8 sample_service
-#
-# # Run the unit tests
+# # Run flake8 to check for code quality
+# lint-test-job:
+#   image: python:3-bullseye
+#   stage: test
+#   script:
+#     - pip install flake8
+#     - flake8 sample_service
+# #
+# # # Run the unit tests
 # api-unit-tests-job:
 #   image: python:3-bullseye
 #   stage: test
@@ -84,3 +84,30 @@ lint-test-job:
 #     - docker run caprover/cli-caprover caprover deploy --caproverUrl $CAPROVER_URL --caproverPassword $CAPROVER_PASSWORD --caproverApp $CAPROVER_APP --imageName $CONTAINER_FULL_IMAGE_NAME_WITH_TAG
 #   only:
 #     - main
+stages:
+  - test
+  - build
+  - deploy
+
+# Run flake8 to check for code quality
+lint-test-job:
+  image: python:3-bullseye
+  stage: test
+  script:
+    - pip install flake8
+    - flake8 sample_service
+
+# Build the application Docker image
+build-job:
+  image: docker:latest
+  stage: build
+  script:
+    - cd sample_service
+    - docker build -t my-sample-service .
+
+# Deploy the application to AWS
+deploy-job:
+  image: docker:latest
+  stage: deploy
+  script:
+    - docker run -d --name sample-service -p 80:80 my-sample-service
